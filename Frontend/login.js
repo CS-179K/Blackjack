@@ -21,4 +21,5 @@ cards.forEach((card) => {
         .addEventListener('click', changePositions)
 })
 
+
 setClasses();
