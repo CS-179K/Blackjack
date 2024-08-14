@@ -1,0 +1,217 @@
+import random
+import os
+
+card_values = {
+    '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
+    'J': 10, 'Q': 10, 'K': 10, 'A': 11
+}
+
+card_count = {
+    '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 0, '8': 0, '9': 0, '10': -1,
+    'J': -1, 'Q': -1, 'K': -1, 'A': -1
+}
+
+def create_deck(num_decks=1):
+    suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+    ranks = list(card_values.keys())
+    deck = [f'{rank} of {suit}' for suit in suits for rank in ranks]
+    return deck * num_decks
+
+def shuffle_deck(deck):
+    random.shuffle(deck)
+    return deck
+
+def deal_card(deck, count):
+    card = deck.pop()
+    rank = card.split()[0]
+    count += card_count[rank]
+    return card, count
+
+def hand_value(hand):
+    value = 0
+    ace_count = 0
+    for card in hand:
+        rank = card.split()[0]
+        value += card_values[rank]
+        if rank == 'A':
+            ace_count += 1
+    while value > 21 and ace_count:
+        value -= 10
+        ace_count -= 1
+    return value
+
+def card_to_str(card):
+    rank, suit = card.split(' of ')
+    suit_symbols = {
+        'Hearts': '♥',
+        'Diamonds': '♦',
+        'Clubs': '♣',
+        'Spades': '♠'
+    }
+    return f"{rank:<2}{suit_symbols[suit]}"
+
+def print_hand(player, hand, hide_first_card=False):
+    rows = ['', '', '', '', '']
+    card_strs = []
+    if hide_first_card:
+        rows[0] += "+------+"  
+        rows[1] += f"|{card_to_str(hand[0])}   |"  
+        rows[2] += "|      |"  
+        rows[3] += "|      |"  
+        rows[4] += "+------+"  
+        rows[0] += "+------+"  
+        rows[1] += "|Hidden| "  
+        rows[2] += "|      |"  
+        rows[3] += "|      |"  
+        rows[4] += "+------+"  
+        card_strs = [card_to_str(hand[0])]
+    else:
+        for card in hand:
+            card_str = card_to_str(card)
+            card_strs.append(card_str)
+            rows[0] += "+------+"  
+            rows[1] += f"|{card_str}   |"  
+            rows[2] += "|      |"  
+            rows[3] += "|      |"
+            rows[4] += "+------+"  
+    print(f"\n{player}'s hand:")
+    print("\n".join(rows))
+    if not hide_first_card:
+        print(f"{player}'s hand: {', '.join(card_strs)} (Value: {hand_value(hand)})")
+
+def is_blackjack(hand):
+    return hand_value(hand) == 21 and len(hand) == 2
+
+def dealer_turn(deck, hand, count):
+    while hand_value(hand) < 17:
+        card, count = deal_card(deck, count)
+        hand.append(card)
+    return hand, count
+
+def player_turn(deck, hand, hand_number, count):
+    while True:
+        action = input(f"Hand {hand_number}: Do you want to 'hit', 'stand', or 'double'? ").strip().lower()
+        if action == 'hit':
+            card, count = deal_card(deck, count)
+            hand.append(card)
+            print_hand(f'Player Hand {hand_number}', hand)
+            if hand_value(hand) > 21:
+                print(f"Hand {hand_number} busts!")
+                return 'bust', count
+        elif action == 'stand':
+            return 'stand', count
+        elif action == 'double':
+            if len(hand) == 2:
+                card, count = deal_card(deck, count)
+                hand.append(card)
+                print_hand(f'Player Hand {hand_number}', hand)
+                return ('bust' if hand_value(hand) > 21 else 'stand'), count
+            else:
+                print("Double down is only allowed on the initial hand.")
+        else:
+            print("Invalid action. Please choose 'hit', 'stand', or 'double'.")
+
+def handle_split(deck, hand, count):
+    if len(hand) == 2:
+        card1_rank = hand[0].split()[0]
+        card2_rank = hand[1].split()[0]
+        if card1_rank == card2_rank or (card_values[card1_rank] == 10 and card_values[card2_rank] == 10):
+            while True:
+                split_decision = input("Do you want to split? Type 'yes' or 'no': ").strip().lower()
+                if split_decision == 'yes':
+                    hand1 = [hand.pop(0)]
+                    card1, count = deal_card(deck, count)
+                    hand1.append(card1)
+                    hand2 = [hand.pop(0)]
+                    card2, count = deal_card(deck, count)
+                    hand2.append(card2)
+                    print("\nSplitting hands:")
+                    print_hand('Player Hand 1', hand1)
+                    print_hand('Player Hand 2', hand2)
+                    results1, count = player_turn(deck, hand1, 1, count)
+                    results2, count = player_turn(deck, hand2, 2, count)
+                    return [hand1, hand2], results1, results2, count
+                elif split_decision == 'no':
+                    return [hand], 'continue', 'continue', count
+                else:
+                    print("Invalid choice. Please choose 'yes' or 'no'.")
+        else:
+            return [hand], 'continue', 'continue', count
+    else:
+        return [hand], 'continue', 'continue', count
+
+def determine_winner(dealer_hand, player_hands):
+    dealer_value = hand_value(dealer_hand)
+    results = []
+    for hand in player_hands:
+        player_value = hand_value(hand)
+        if player_value > 21:
+            results.append("bust")
+        elif dealer_value > 21 or player_value > dealer_value:
+            results.append("win")
+        elif player_value < dealer_value:
+            results.append("lose")
+        else:
+            results.append("push")
+    return results
+
+def is_reshuffle_needed(deck):
+    return len(deck) < 20
+
+def clear_console():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def play_blackjack():
+    deck = shuffle_deck(create_deck())
+    count = 0
+    while True:
+        clear_console()
+        if is_reshuffle_needed(deck):
+            print("Deck is being refreshed.")
+            deck = shuffle_deck(create_deck())
+            count = 0
+        player_hand = []
+        dealer_hand = []
+        for _ in range(2):
+            card, count = deal_card(deck, count)
+            player_hand.append(card)
+            card, count = deal_card(deck, count)
+            dealer_hand.append(card)
+        print_hand('Dealer', dealer_hand, hide_first_card=True)
+        print_hand('Player', player_hand)
+        hands, result1, result2, count = handle_split(deck, player_hand, count)
+        hand_statuses = [result1, result2] if len(hands) == 2 else [result1]
+        for i, hand in enumerate(hands):
+            if hand_statuses[i] not in ('bust', 'stand'):
+                clear_console()
+                print_hand('Dealer', dealer_hand, hide_first_card=True)
+                print_hand(f'Player Hand {i + 1}', hand)
+                hand_statuses[i], count = player_turn(deck, hand, i + 1, count)
+        if all(status != 'bust' for status in hand_statuses):
+            dealer_hand, count = dealer_turn(deck, dealer_hand, count)
+            clear_console()
+            print_hand('Dealer', dealer_hand)
+            for i, hand in enumerate(hands):
+                print_hand(f'Player Hand {i + 1}', hand)
+        results = determine_winner(dealer_hand, hands)
+        for i, hand in enumerate(hands):
+            if hand_statuses[i] == 'bust':
+                print(f"Hand {i + 1} busts! Dealer wins.")
+            elif results[i] == "win":
+                print(f"Hand {i + 1} wins!")
+            elif results[i] == "lose":
+                print(f"Hand {i + 1} loses.")
+            elif results[i] == "push":
+                print(f"Hand {i + 1} is a push.")
+        player_count = int(input("What is the current running count? "))
+        if player_count == count:
+            print("Correct! ", count)
+        else:
+            print(f"Incorrect. The actual count is {count}.")
+        play_again = input("Do you want to play again? Type 'yes' or 'no': ").strip().lower()
+        if play_again != 'yes':
+            break
+
+if __name__ == "__main__":
+    play_blackjack()
+
