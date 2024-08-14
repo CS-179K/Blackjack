@@ -62,13 +62,16 @@ def start_game():
     shuffle_deck(deck)
     session['player_hand'] = [deal_card(), deal_card()]
     session['dealer_hand'] = [deal_card(), deal_card()]
+    session['show_dealer_first_card'] = False
     return redirect(url_for('game.show_game'))
 
 @game.route('/')
 def show_game():
     player_hand = session.get('player_hand', [])
     dealer_hand = session.get('dealer_hand', [])
-    return render_template('game.html', player_hand=player_hand, dealer_hand=dealer_hand)
+    show_dealer_first_card = session.get('show_dealer_first_card', False)
+    return render_template('game.html', player_hand=player_hand, dealer_hand=dealer_hand, show_dealer_first_card=show_dealer_first_card)
+
 
 @game.route('/hit')
 def hit():
@@ -79,8 +82,9 @@ def hit():
 
 @game.route('/stay')
 def stay():
-    # Handle stay logic
+    session['show_dealer_first_card'] = True
     return redirect(url_for('game.evaluate_game'))
+
 
 @game.route('/evaluate_game')
 def evaluate_game():
@@ -95,4 +99,4 @@ def evaluate_game():
     dealer_score = hand_value(dealer_hand)
     result = evaluate_winner(player_score, dealer_score)
 
-    return render_template('game.html', player_hand=player_hand, dealer_hand=dealer_hand, result=result)
+    return render_template('game.html', player_hand=player_hand, dealer_hand=dealer_hand,show_dealer_first_card=True, result=result)
