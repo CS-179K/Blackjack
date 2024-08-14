@@ -3,12 +3,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
-  BLACKJACK
-</h1>
-<div class="buttons">
-    <button id="hit">Hit</button>
-    <button id="stay">Stay</button>
-    <button id="split">Split</button>
+
+<div class="home-body">
+  <h1 class="title">
+    BLACKJACK
+  </h1>
+    <div class="playHand">
+      <button class="hit" role="button">Hit</button>
+      <button class="stay" role="button">Stay</button>
+      <button class="split" role="button">Split</button>
+    </div>
 </div>
 {% endblock %}
