@@ -1,0 +1,18 @@
+.title {
+    
+}
+
+.hero-body{
+    display:flex;
+    
+}
+
+.buttons {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    bottom: 0;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
