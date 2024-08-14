@@ -9,6 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flask Auth Example</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    {% block styles %}{% endblock %}
+    <style>
+        html {
+            background-color: #222; /* Change the color to whatever you prefer */
+        }
+        .hero.is-primary{
+            background-color: green;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -30,11 +40,9 @@
                             {% endif %}
                             {% if not current_user.is_authenticated %}
                             <a href="{{ url_for('auth.login') }}" class="navbar-item">
-                                Login
+                                Login/Register
                             </a>
-                            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
-                                Sign Up
-                            </a>
+                           
                             {% endif %}
                             {% if current_user.is_authenticated %}
                             <a href="{{ url_for('auth.logout') }}" class="navbar-item">
