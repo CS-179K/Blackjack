@@ -40,6 +40,8 @@ def hand_value(hand):
     return value
 
 def evaluate_winner(player_score, dealer_score):
+    if player_score and dealer_score >=21:
+        return 'Push'
     if player_score > 21:
         return 'Player busts'
     elif dealer_score > 21:
