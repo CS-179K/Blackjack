@@ -1,0 +1,42 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Blackjack Game</h1>
+<div>
+    
+    <div class="Dealer" style="display: flex; align-items: center; justify-content: start; gap: 10px; background-color: #222; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h1 style="margin-right: 20px;">Dealer Hand:</h1>
+        {% if show_dealer_first_card %}
+        {% for card in dealer_hand %}
+        <p>{{ card }}</p>
+        {% endfor %}
+    {% else %}
+        <p>Hidden Card</p>
+        <p>{{ dealer_hand[1] }}</p>
+    {% endif %}
+       
+    <div class="Player" style="display: flex; align-items: center; justify-content: start; gap: 10px; background-color: #222; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h1 style="margin-right: 20px;">Your Hand:</h1>
+        {% for card in player_hand %}
+        <p style="padding: 10px; border: 1px solid #aa1e1e; border-radius: 4px; background-color: #222; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            {{ card }}
+        </p>
+        {% endfor %}
+    </div>
+    
+    
+
+    <h2 style="background-color: #333; color: #fff; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+        {% if result %}
+    <h2>Result: {{ result }}</h2>
+        {% endif %}
+
+    </h2>
+    
+    <a href="{{ url_for('game.start_game') }}">Start Game</a>
+    <a href="{{ url_for('game.hit') }}">Hit</a>
+    <a href="{{ url_for('game.stay') }}">Stay</a>
+</div>
+
+{% endblock %}
