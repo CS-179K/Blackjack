@@ -1,5 +1,7 @@
 from flask import session, render_template, redirect, url_for, Blueprint
 import random
+from flask_login import login_required, current_user
+
 
 game = Blueprint('game', __name__)
 
@@ -87,6 +89,11 @@ def stay():
     session['show_dealer_first_card'] = True
     return redirect(url_for('game.evaluate_game'))
 
+@login_required
+def gameData():
+    money = current_user.bank
+    games = current_user.games
+    return money, games
 
 @game.route('/evaluate_game')
 def evaluate_game():
@@ -100,5 +107,10 @@ def evaluate_game():
     player_score = hand_value(player_hand)
     dealer_score = hand_value(dealer_hand)
     result = evaluate_winner(player_score, dealer_score)
+
+    # For games played
+    money, games = gameData()
+    games += 1
+    current_user.games(games)
 
     return render_template('game.html', player_hand=player_hand, dealer_hand=dealer_hand,show_dealer_first_card=True, result=result)

@@ -13,7 +13,7 @@ def index():
 @main.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', name=current_user.name)
+    return render_template('profile.html', name=current_user.name, money=current_user.bank)
 @main.route('/game')
 def game():
     return render_template('game.html')
