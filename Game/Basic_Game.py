@@ -1,6 +1,7 @@
 from flask import session, render_template, redirect, url_for, Blueprint
 import random
 from flask_login import login_required, current_user
+from . import db
 
 
 game = Blueprint('game', __name__)
@@ -41,18 +42,28 @@ def hand_value(hand):
         aces -= 1
     return value
 
+# See if there is better way for counting wins ... this works for now, but user auth is an issue
 def evaluate_winner(player_score, dealer_score):
     if player_score and dealer_score >=21:
+        # New bug... Dealer got 21, player 19 -> Push
+        # Possible if stmt order issue?
         return 'Push'
     if player_score > 21:
         return 'Player busts'
     elif dealer_score > 21:
+        if current_user.is_authenticated:
+            current_user.wins += 1
         return 'Dealer busts Player wins!'
     elif player_score > dealer_score:
+        # same as games played, just for wins
+        if current_user.is_authenticated:
+            current_user.wins += 1
         return 'Player wins'
     elif dealer_score > player_score:
         return 'Dealer wins'
     elif player_score == 21:
+        if current_user.is_authenticated:
+            current_user.wins += 1
         return 'Player wins'
     elif dealer_score == 21:
         return 'Dealer wins'
@@ -71,6 +82,7 @@ def start_game():
 
 @game.route('/')
 def show_game():
+    # if user not auth, have a value called guest_games + guest_money or somtin
     player_hand = session.get('player_hand', [])
     dealer_hand = session.get('dealer_hand', [])
     show_dealer_first_card = session.get('show_dealer_first_card', False)
@@ -109,8 +121,11 @@ def evaluate_game():
     result = evaluate_winner(player_score, dealer_score)
 
     # For games played
-    money, games = gameData()
-    games += 1
-    current_user.games(games)
+    # use session for guest
+    if current_user.is_authenticated:
+        money, games = gameData()
+        current_user.games += 1
+        db.session.commit()
+        print(games) # Terminal testing
 
     return render_template('game.html', player_hand=player_hand, dealer_hand=dealer_hand,show_dealer_first_card=True, result=result)
