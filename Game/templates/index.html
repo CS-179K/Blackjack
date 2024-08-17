@@ -1,21 +1,24 @@
-<!-- templates/index.html -->
-
 {% extends "base.html" %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gameselect.css') }}">
+{% endblock %}
+
 {% block content %}
+<h1 class="title">
+  Welcome to Blackjack! Choose a gamemode below.
+</h1>
 
-<div class="home-body">
-  <h1 class="title">
-    BLACKJACK
-  </h1>
-
-    <!-- Buttons -->
-    <div class="playHand">
-      <button class="hit" role="button">Hit</button>
-      <button class="stay" role="button">Stay</button>
-      <button class="split" role="button">Split</button>
-      <div class="bank">Bank: </div> <!-- Later, will add svg background -->
-    </div>
+<div class="gamemode-container">
+  <a href="#" class="gamemode-card">
+    <h2>Count Cards Practice</h2>
+  </a>
+  <a href="{{ url_for('main.game') }}" class="gamemode-card">
+    <h2>Normal Game</h2>
+  </a>
+  <a href="#" class="gamemode-card">
+    <h2>Basic Strategy Practice</h2>
+  </a>
 
 </div>
 {% endblock %}
