@@ -1,6 +1,21 @@
-1. When I click on a game it should take me to the correct one
-2. The cards should not get stuck when playing the game
-3. My money count is correct everytime I log in.
-4. When I look at my profile the numbers are exactly what they were after my games.
-5. I want to be able to practice counting cards.
-6. When a card is dealt I want the card to slide across the screen to the correct posiion. 
+Regression testing so that new things should not break any of this
+
+1. When I log in it goes to my account
+2. When I change page it's still my account
+3. When I register I get logged in
+4. I want to practice blackjack
+5. I don't hit on incorrect values
+6. If i hit on 21 I get a warning
+7. I cannot input values below -10 for count // True count or Running count???
+8. I keep an accurate count 
+9. The game saves my scores
+10. The scores are from my game
+11. My scores are accurate
+12. I want to see the correct balance when I bet
+13. I want my balance to update with my bets.
+14. I want my payout to be correct.
+15. I want my scores to be on display when logging in.
+16. I want to see the dealers hand
+17. I want to see my hand
+18. I want to be able to set bets
+19. I shouldn't be able to modify bets mid round
