@@ -1,12 +1,26 @@
-<!-- templates/index.html -->
-
 {% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gameselect.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
 
 {% block content %}
 <h1 class="title">
-  BLACKJACK
+  Welcome to Blackjack! Choose a gamemode below.
 </h1>
-<div class="buttons">
-    <button id="play" href="./templates/game.html" >Play game</button>
+
+<div class="gamemode-container">
+  <a href="#" class="gamemode-card">
+    <h2>Count Cards Practice</h2>
+  </a>
+  <a href="{{ url_for('main.game') }}" class="gamemode-card">
+    <h2>Normal Game</h2>
+  </a>
+  <a href="#" class="gamemode-card">
+    <h2>Basic Strategy Practice</h2>
+  </a>
+
 </div>
 {% endblock %}
+
