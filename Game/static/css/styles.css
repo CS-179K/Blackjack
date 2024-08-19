@@ -36,9 +36,17 @@ html, body {
     cursor: pointer;
     outline: none;
     border: none;
+    background-image: url(../img/blue.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
-
+span{
+  color:rgba(0, 255, 0, 0.921);
+  font-weight: bold;  
+  width: 5em;
+  font-size: 120%;
+}
 .gamemode-card:hover {
     transform: scale(1.05);
     background-color: #e0e0e0;
