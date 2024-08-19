@@ -16,7 +16,9 @@
             <p style="color: #fff;">Dealer's Score: {{ dealer_hand_value }}</p>
         {% else %}
             <div class="card" style="padding: 10px; border: 1px solid #aa1e1e; border-radius: 4px; background-color: #333; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                {%if dealer_hand %}
                 {{ dealer_hand[0] }}
+                {% endif %}
             </div>
             <div class="card" style="padding: 10px; border: 1px solid #aa1e1e; border-radius: 4px; background-color: #333; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 Hidden Card
