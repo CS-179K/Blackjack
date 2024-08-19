@@ -2,4 +2,4 @@
 2. The cards should not get stuck when playing the game
 3. My money count is correct everytime I log in.
 4. When I look at my profile the numbers are exactly what they were after my games.
-5.I want to be able to practice counting cards.
+5. I want to be able to practice counting cards.
