@@ -94,16 +94,28 @@ def handle_player_action(action):
             session['result'] = result_message
 
     def handle_bust():
+        # Handle the case where the player busts
+        bet = session.get('bet', 0)
+        doubled_down = session.get('doubled_down', False)
+        original_bet_before_doubling = session.get('original_bet_before_doubling', bet)
+
+        # Deduct the appropriate amount from the bankroll based on the doubled down state
         if doubled_down:
             session['bankroll'] -= (original_bet_before_doubling * 2)  # Lose doubled bet
-            session['doubled_down'] = False
         else:
-            session['bankroll'] -= session.get('bet', 0)
-        
-        if not any(hand_value(h) <= 21 for h in player_hands):  # Check if all hands are busted
+            session['bankroll'] -= bet  # Lose original bet
+
+        # Check if all hands are busted
+        if not any(hand_value(h) <= 21 for h in session.get('player_hands', [])):
             update_game_state(True, 'You bust!')
             session['show_dealer_hand'] = True
+
+        # Reset doubled down flag
+        session['bet'] = original_bet_before_doubling
+        session['doubled_down'] = False
+
         return redirect(url_for('game.show_game'))
+
 
     def handle_surrender():
         if doubled_down:
@@ -126,6 +138,8 @@ def handle_player_action(action):
         bet = session.get('bet', 0)
         insurance = session.get('insurance', False)
         dealer_blackjack = session.get('dealer_blackjack', False)
+        doubled_down = session.get('doubled_down', False)
+        original_bet_before_doubling = session.get('original_bet_before_doubling', bet)
 
         def handle_dealer_blackjack():
             if insurance:
@@ -139,32 +153,47 @@ def handle_player_action(action):
         if dealer_blackjack:
             return handle_dealer_blackjack()
 
-        if all(hand_value(h) > 21 for h in player_hands):  # Check if all hands are busted
+        if all(hand_value(h) > 21 for h in session.get('player_hands', [])):  # Check if all hands are busted
             return handle_bust()
 
-        for hand in player_hands:
+        for hand in session.get('player_hands', []):
             player_hand_value = hand_value(hand)
             if player_hand_value > 21:
-                continue
+                continue  # Skip this hand if it is busted
 
             if dealer_hand_value > 21 or player_hand_value > dealer_hand_value:
-                if player_hand_value == 21:
-                    session['bankroll'] += original_bet_before_doubling * 1.5  # Blackjack pays 3:2
-                    update_game_state(True, 'Blackjack! You win with a 3 to 2 payout.')
+                # Player wins
+                if player_hand_value == 21:  # Blackjack
+                    if doubled_down:
+                        session['bankroll'] += original_bet_before_doubling * 3  # Double Down, double the payout
+                        update_game_state(True, 'Blackjack! You won double down.')
+                    else:
+                        session['bankroll'] += original_bet_before_doubling * 1.5  # Blackjack pays 3:2
+                        update_game_state(True, 'Blackjack! You win with a 3 to 2 payout.')
                 else:
-                    session['bankroll'] += session.get('original_bet_before_doubling', 0) * 2  # Win with doubled bet amount
-                    update_game_state(True, 'You win!')
+                    if doubled_down:
+                        session['bankroll'] += original_bet_before_doubling * 2  # Double Down, double the payout
+                        update_game_state(True, 'You win! You won double down.')
+                    else:
+                        session['bankroll'] += bet  # Win with the original bet amount
+                        update_game_state(True, 'You win!')
             elif player_hand_value == dealer_hand_value:
-                session['bankroll'] += session.get('bet', 0)  # Push
                 update_game_state(True, 'Push! It\'s a tie.')
             else:
-                session['bankroll'] -= session.get('bet', 0)  # Loss
-                update_game_state(True, 'Dealer wins.')
+                # Dealer wins
+                if doubled_down:
+                    session['bankroll'] -= original_bet_before_doubling * 2  # Double Down, double the loss
+                    update_game_state(True, 'Dealer wins. You lost the double down.')
+                else:
+                    session['bankroll'] -= bet  # Loss
+                    update_game_state(True, 'Dealer wins.')
 
-        session['original_bet_before_doubling'] = original_bet
+        # Reset bet and doubled down flag
+        session['bet'] = original_bet_before_doubling
         session['doubled_down'] = False
 
         return redirect(url_for('game.show_game'))
+
 
     def is_pair(card1, card2):
         return hand_value([card1]) == hand_value([card2])
@@ -186,7 +215,7 @@ def handle_player_action(action):
             return resolve_hand()  # Determine the outcome after dealer plays
         else:
             session['current_hand'] = current_hand_index + 1
-            return redirect(url_for('game.show_game'))
+        return redirect(url_for('game.show_game'))
 
     elif action == 'split':
         if len(hand) == 2 and is_pair(hand[0], hand[1]):
@@ -203,8 +232,19 @@ def handle_player_action(action):
     elif action == 'double_down':
         if len(hand) == 2:
             card = deal_card()
-            if card:
-                hand.append(card)
+            hand.append(card)
+            if current_hand_index == len(player_hands) - 1:
+                session['doubled_down'] = True
+                if hand_value(hand) > 21:
+                    return handle_bust()
+                else:
+                    session['player_hands'] = player_hands
+                    session['current_hand'] += 1
+                    if session['current_hand'] >= len(player_hands):
+                        dealer_turn()  # Handle dealer's turn if it's the last hand
+                        return resolve_hand()
+            else:
+                session['current_hand'] = current_hand_index + 1
                 session['original_bet_before_doubling'] = session.get('bet', 0)  # Store the original bet amount
                 session['bet'] *= 2  # Double the bet amount
                 session['doubled_down'] = True
@@ -213,16 +253,15 @@ def handle_player_action(action):
                 else:
                     session['player_hands'] = player_hands
                     session['current_hand'] += 1
-                    dealer_turn()  # Handle dealer's turn
-                    return resolve_hand()
+                    if session['current_hand'] >= len(player_hands):
+                        dealer_turn()  # Handle dealer's turn if it's the last hand
+                        return resolve_hand()
         return redirect(url_for('game.show_game'))
 
     elif action == 'surrender':
         return handle_surrender()
 
     return redirect(url_for('game.show_game'))
-
-
 
 @game.route('/player_action/<action>')
 def player_action(action):
@@ -285,12 +324,19 @@ def show_game():
     show_new_game_button = session.get('show_new_game_button', False)
     insurance_prompted = session.get('insurance_prompted', False)
 
+    # Calculate player hands' values
     player_hand_values = [hand_value(hand) for hand in player_hands]
+    player_hands_with_values = list(zip(player_hands, player_hand_values))
+
+    # Check if dealer's face-up card is an Ace
+    dealer_face_up_card = dealer_hand[0] if dealer_hand else None
+    dealer_face_up_is_ace = dealer_face_up_card and dealer_face_up_card.startswith('A')
+
+    # Calculate dealer hand value if it should be shown
     dealer_hand_value = hand_value(dealer_hand) if show_dealer_hand else None
 
-    player_hands_with_values = zip(player_hands, player_hand_values)
-
-    if dealer_hand and dealer_hand[0].startswith('A') and not insurance_prompted and not game_over:
+    # Show insurance option only if dealer's face-up card is an Ace
+    if dealer_face_up_is_ace and not insurance_prompted and not game_over:
         session['insurance_prompted'] = True
         return render_template('game.html',
                                player_hands_with_values=player_hands_with_values,
@@ -305,7 +351,7 @@ def show_game():
                                show_dealer_hand=show_dealer_hand,
                                bet=bet,
                                bankroll=session['bankroll'])
-    
+
     return render_template('game.html',
                            player_hands_with_values=player_hands_with_values,
                            dealer_hand=dealer_hand,
@@ -325,6 +371,15 @@ def insurance():
     if session.get('game_over', False):
         return redirect(url_for('game.show_game'))
 
+    # Check if insurance prompt is valid
+    dealer_hand = session.get('dealer_hand', [])
+    dealer_face_up_card = dealer_hand[0] if dealer_hand else None
+    dealer_face_up_is_ace = dealer_face_up_card and dealer_face_up_card.startswith('A')
+
+    if not dealer_face_up_is_ace:
+        # If dealer's face-up card is not an Ace, ignore insurance choice
+        return redirect(url_for('game.show_game'))
+
     insurance_choice = request.form.get('insurance_choice')
     bet = session.get('bet', 0)
 
@@ -335,10 +390,9 @@ def insurance():
         session['insurance'] = False
 
     # Reveal dealer's hand after insurance choice
-    dealer_hand = session.get('dealer_hand', [])
     dealer_hand_value = hand_value(dealer_hand)
     
-    if dealer_hand and dealer_hand[0].startswith('A') and dealer_hand_value == 21:
+    if dealer_face_up_is_ace and dealer_hand_value == 21:
         session['dealer_blackjack'] = True
     else:
         session['dealer_blackjack'] = False
