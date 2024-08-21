@@ -7,16 +7,26 @@
 {% block content %}
 <div class="grid-container">
     <div class="chips">Bankroll: ${{ bankroll }}
-        <img id="chip" draggable="true"   src="{{ url_for('static', filename='img/poker_chip.svg') }}"></img>
+        <form id="bet-amount" action="{{ url_for('game.start_game') }}" method="post" style="display: flex; gap: 10px;">
+            <label for="bet" style="color: #fff;">Bet Amount:</label>
+            <input type="number" id="bet" name="bet" min="1" max="{{ bankroll }}" required style="padding: 5px; border-radius: 4px;">
+            <input type="image" id="chip" src="{{ url_for('static', filename='img/poker_chip.svg') }}" ></input>
+        </form>
     </div>
     <div class="dealer-cards">DCARDS</div>
     <div class="player-cards">PCARDS</div>
-    <div class="game-buttons">Buttons
+    <div class="grid-buttons">
+      <div id="ins-buttons">
+        <button class="take-ins" role="button">Take Insurance</button>
+        <button class="skip-ins" role="button">Skip Insurance</button>
+      </div>
+      <div id="game-buttons">
         <button class="hit" role="button">Hit</button>
         <button class="stay" role="button">Stay</button>
         <button class="split" role="button">Split</button>
         <button class="double" role="button">Double</button>
         <button class="surrender" role="button">Surrender</button>
+      </div>
     </div>
 </div>
 
