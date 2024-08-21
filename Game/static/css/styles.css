@@ -626,3 +626,18 @@ body {
   cursor: default;
   opacity: 0.24;
 }
+
+.player-cards {
+  display: flex; /* Using flex to align cards inline */
+  padding: 10px; /* Space around the cards */
+}
+
+/* Individual card styling */
+.card {
+  width: 90px; /* Width of each card */
+  height: 140px; /* Height of each card */
+  background-image: url("https://assets.codepen.io/67732/card-faces.svg");
+  background-size: 1400px 560px; /* Adjust according to the number of cards in the SVG */
+  overflow: hidden;
+  margin-right: 10px; /* Space between cards */
+}

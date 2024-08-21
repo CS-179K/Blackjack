@@ -1,4 +1,10 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/styles.css') }}"
+/>
+
+{% endblock %} {% block content %}
 <h1>Blackjack Game</h1>
 <div style="display: flex; flex-direction: column; align-items: center">
   <!-- Dealer Hand -->
@@ -92,6 +98,13 @@
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         "
       >
+        <div class="player-cards">
+          <div class="player-container">
+            <div id="card" data-card-id="{{ card }}"></div>
+            <!-- Additional cards can be added similarly -->
+          </div>
+          <script src="/static/js/scripts.js"></script>
+        </div>
         {{ card }}
       </div>
       {% endfor %}
