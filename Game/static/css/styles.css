@@ -69,7 +69,7 @@ body {
 
 .grid-container{
     display:grid;
-    background-color: #b8b8b8;
+    background-color: #b8b8b879;
     grid-template-columns: 30rem auto;
     grid-template-rows: auto;
     height: 100%;
