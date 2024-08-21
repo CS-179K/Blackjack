@@ -2,33 +2,61 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
 {% endblock %}
 
 {% block content %}
 <div class="grid-container">
+    <!-- Bankroll, Current Bet and Betting -->
     <div class="chips">Bankroll: ${{ bankroll }}
+        <p id="current-bet">Current Bet: ${{ bet }} </p>
         <form id="bet-amount" action="{{ url_for('game.start_game') }}" method="post" style="display: flex; gap: 10px;">
             <label for="bet" style="color: #fff;">Bet Amount:</label>
-            <input type="number" id="bet" name="bet" min="1" max="{{ bankroll }}" required style="padding: 5px; border-radius: 4px;">
-            <input type="image" id="chip" src="{{ url_for('static', filename='img/poker_chip.svg') }}" ></input>
+            <input type="number" id="bet" name="bet" min="1" max="{{ bankroll }}" required
+                style="padding: 5px; border-radius: 4px;">
+            <input type="image" id="chip" src="{{ url_for('static', filename='img/poker_chip.svg') }}"></input>
         </form>
     </div>
     <div class="dealer-cards">DCARDS</div>
-    <div class="player-cards">PCARDS</div>
+    <div class="player-cards">
+        <div class="player-container"> 
+            <div id="card" data-card-id="8 of Hearts" id="8 of Hearts"></div>
+          <!-- Additional cards can be added similarly -->
+        </div>
+        <script src="/static/js/scripts.js"></script>
+
+      </div>
     <div class="grid-buttons">
-      <div id="ins-buttons">
-        <button class="take-ins" role="button">Take Insurance</button>
-        <button class="skip-ins" role="button">Skip Insurance</button>
-      </div>
-      <div id="game-buttons">
-        <button class="hit" role="button">Hit</button>
-        <button class="stay" role="button">Stay</button>
-        <button class="split" role="button">Split</button>
-        <button class="double" role="button">Double</button>
-        <button class="surrender" role="button">Surrender</button>
-      </div>
+
+        <!-- Insurance Status -->
+        <h3 id="insurance-status"
+            style="background-color: #444; color: #fff; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); margin-top: 10px;">
+            Insurance: {{ 'Active' if insurance else 'Not Active' }}
+        </h3>
+        <!-- Insurance Button -->
+
+        {% if not insurance %}
+        <form action="{{ url_for('game.insurance') }}" method="post">
+            <div id="ins-buttons">
+                <button class="take-ins" type="submit" value="take" role="button">Take Insurance</button>
+                <button class="skip-ins" type="submit" value="skip" role="button">Skip Insurance</button>
+            </div>
+        </form>
+        {% endif %}
+
+        <!-- Game Actions -->
+        {% if not game_over %}
+        <div id="game-buttons">
+            <a class="hit" href="{{ url_for('game.player_action', action='hit') }}" role="button">Hit</a>
+            <a class="stay" href="{{ url_for('game.player_action', action='stay') }}">Stay</a>
+            {% if not splitted %}
+            <a class="split" href="{{ url_for('game.player_action', action='double_down') }}">Split</a>
+            {% endif %}
+            <a class="double" href="{{ url_for('game.player_action', action='double_down') }}">Double</a>
+            <a class="surrender" href="{{ url_for('game.player_action', action='surrender') }}">Surrender</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 
 {% endblock %}
-
