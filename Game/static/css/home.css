@@ -13,7 +13,7 @@ body {
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url('https://pl.sterlingcdn.com/wp-content/uploads/sites/3/2018/07/blackjack-classic-background.jpg');
+    background-image: url(../img/Black_jack_upscaled.jpg);
 }
 
 .navbar-menu {

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1 class="title">
+  Welcome to Blackjack! Choose a gamemode below.
+</h1>
+
+<div class="gamemode-container">
+  <a href="#" class="gamemode-card">
+    <span>Count Cards Practice</span>
+  </a>
+  <a href="{{ url_for('main.game') }}" class="gamemode-card">
+    <span>Normal Game</span>
+  </a>
+  <a href="#" class="gamemode-card">
+    <span>Basic Strategy Practice</span>
+  </a>
+
+</div>
+{% endblock %}
