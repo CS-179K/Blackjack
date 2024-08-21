@@ -20,47 +20,44 @@
         <div class="hero-head">
             <nav class="navbar" role="navigation" aria-label="main navigation">
                 <div id="navbarBasicExample" class="navbar-menu">
-                  <div class="navbar-start">
-                    <a href="{{ url_for('main.index') }}" class="navbar-item">
-                      Home
-                    </a>
-                    <a href="{{ url_for('main.gamemodes') }}" class="navbar-item">
-                        Gamemodes
-                      </a>
-                    {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.profile') }}" class="navbar-item">
-                                Profile
-                            </a>
-                            {% endif %}
-                  </div>
-              
-                  <div class="navbar-end">
-                    <div class="navbar-item">
-                      <div class="buttons">
-                        {% if not current_user.is_authenticated %}
-                        <a href="{{ url_for('auth.login') }}" class="button is-primary">
-                          <strong>Login/Register</strong>
+                    <div class="navbar-start">
+                        <a href="{{ url_for('main.index') }}" class="navbar-item">
+                            Home
                         </a>
-                        {% endif %}
-
+                        <a href="{{ url_for('main.gamemodes') }}" class="navbar-item">
+                            Gamemodes
+                        </a>
                         {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('auth.logout') }}" class="button is-light">
-                          Logout
+                        <a href="{{ url_for('main.profile') }}" class="navbar-item">
+                            Profile
                         </a>
                         {% endif %}
-
-                      </div>
                     </div>
-                  </div>
+
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                {% if not current_user.is_authenticated %}
+                                <a href="{{ url_for('auth.login') }}" class="button is-primary">
+                                    <strong>Login/Register</strong>
+                                </a>
+                                {% endif %}
+
+                                {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('auth.logout') }}" class="button is-light">
+                                    Logout
+                                </a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </nav>
+            </nav>
         </div>
-
-       
-               {% block content %}
-               {% endblock %}
-
     </section>
+    {% block content %}
+    {% endblock %}
 </body>
 
 </html>
