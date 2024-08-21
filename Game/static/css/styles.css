@@ -92,6 +92,18 @@ body {
     width: 25%;
     flex-shrink: 0;
 }
+#bet{
+    height: 3rem;
+}
+#bet-amount{
+    height: fit-content;
+    align-self: flex-end;
+    padding-bottom: 20rem;
+    flex-shrink: 1;
+    width: auto; /* Or a percentage like width: 50%; */
+    max-width: 100%;
+    margin-left: 1rem;
+}
 .Fart{
     align-self: center;
 }
