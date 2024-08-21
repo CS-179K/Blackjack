@@ -2,6 +2,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<script src="/static/js/scripts.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +15,13 @@
         </form>
     </div>
     <div class="dealer-cards">DCARDS</div>
-    <div class="player-cards">PCARDS</div>
+    <div class="player-cards">
+      <div class="player-container"> 
+        <div id="card" data-card-id="{{8 of Hearts}}" id="8 of Hearts"></div>
+        <!-- Additional cards can be added similarly -->
+      </div>
+    </div>
+    
     <div class="grid-buttons">
       <div id="ins-buttons">
         <button class="take-ins" role="button">Take Insurance</button>
