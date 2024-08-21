@@ -3,6 +3,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    
 }
 
 .hero.is-primary {
@@ -64,4 +65,9 @@ h1.title {
 
 body {
     background-color: #228B22; 
+}
+
+.grid-container{
+    display:grid;
+    background-color: #b8b8b8;
 }
