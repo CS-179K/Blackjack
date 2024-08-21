@@ -70,4 +70,9 @@ body {
 .grid-container{
     display:grid;
     background-color: #b8b8b8;
+    grid-template-columns: auto auto auto auto auto auto;
+}
+
+.chips{
+    grid-row: 1 / 4;
 }
