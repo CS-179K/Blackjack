@@ -292,7 +292,7 @@ def start_new_hand():
     session['show_new_hand_button'] = False
     session['show_new_game_button'] = False
     session['show_dealer_hand'] = False
-
+    
     return redirect(url_for('game.show_game'))
 
 @game.route('/start_new_game', methods=['POST'])
