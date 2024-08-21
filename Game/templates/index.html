@@ -6,8 +6,8 @@
 
 {% block content %}
 <div class="grid-container">
-    <div class="chips">CHIPS
-        <button draggable="true" class="Fart">fart</button>
+    <div class="chips">Bankroll: ${{ bankroll }}
+        <img id="chip" draggable="true"   src="{{ url_for('static', filename='img/poker_chip.svg') }}"></img>
     </div>
     <div class="dealer-cards">DCARDS</div>
     <div class="player-cards">PCARDS</div>

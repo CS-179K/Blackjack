@@ -82,12 +82,15 @@ body {
 .chips{
     display: flex;
     flex-direction: row;
-    width: 2rem;
     grid-column-start: 1;
     grid-column-end:1;
     grid-row-start: 1;
     grid-row-end:10 ;
     height: 100%;
+}
+#chip{
+    width: 25%;
+    flex-shrink: 0;
 }
 .Fart{
     align-self: center;
