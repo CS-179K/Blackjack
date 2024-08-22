@@ -338,7 +338,7 @@ def show_game():
     # Show insurance option only if dealer's face-up card is an Ace
     if dealer_face_up_is_ace and not insurance_prompted and not game_over:
         session['insurance_prompted'] = True
-        return render_template('game.html',
+        return render_template('index.html',
                                player_hands_with_values=player_hands_with_values,
                                dealer_hand=dealer_hand,
                                dealer_hand_value=dealer_hand_value,
@@ -352,7 +352,7 @@ def show_game():
                                bet=bet,
                                bankroll=session['bankroll'])
 
-    return render_template('game.html',
+    return render_template('index.html',
                            player_hands_with_values=player_hands_with_values,
                            dealer_hand=dealer_hand,
                            dealer_hand_value=dealer_hand_value,

@@ -45,7 +45,6 @@
         {% endif %}
 
         <!-- Game Actions -->
-        {% if not game_over %}
         <div id="game-buttons">
             <a class="hit" href="{{ url_for('game.player_action', action='hit') }}" role="button">Hit</a>
             <a class="stay" href="{{ url_for('game.player_action', action='stay') }}">Stay</a>
@@ -55,7 +54,6 @@
             <a class="double" href="{{ url_for('game.player_action', action='double_down') }}">Double</a>
             <a class="surrender" href="{{ url_for('game.player_action', action='surrender') }}">Surrender</a>
         </div>
-        {% endif %}
     </div>
 </div>
 
