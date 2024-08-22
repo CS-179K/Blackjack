@@ -332,7 +332,7 @@ def show_game():
     dealer_face_up_card = dealer_hand[0] if dealer_hand else None
     dealer_face_up_is_ace = dealer_face_up_card and dealer_face_up_card.startswith('A')
 
-    # Calculate dealer hand value if it should be shown
+    # Calculate dealer hand value if Fit should be shown
     dealer_hand_value = hand_value(dealer_hand) if show_dealer_hand else None
 
     # Show insurance option only if dealer's face-up card is an Ace

@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const cardContainer = document.getElementById("card");
-  const cardId = cardContainer.dataset.cardId; // Get card ID from data attribute
+  const cardContainers = document.querySelectorAll("[data-card-id]"); // Select all elements with data-card-id attribute
 
-  displayCard(cardId); // Call display function immediately with the provided card ID
-  console.log(cardId);
-  function displayCard(cardId) {
+  cardContainers.forEach(function (cardContainer) {
+    const cardId = cardContainer.dataset.cardId; // Get card ID from data attribute
+    displayCard(cardId, cardContainer); // Call display function with the card ID and the respective container
+  });
+
+  function displayCard(cardId, container) {
     const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
     const ranks = [
       "A",
@@ -26,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const cardHeight = 140;
     const svgUrl = "https://assets.codepen.io/67732/card-faces.svg";
 
-    cardContainer.innerHTML = ""; // Clear previous content
+    container.innerHTML = ""; // Clear previous content
     const div = document.createElement("div");
     div.classList.add("card");
     div.style.backgroundImage = `url('${svgUrl}')`;
@@ -42,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const posY = suitIndex * cardHeight;
     div.style.backgroundPosition = `-${posX}px -${posY + cardHeight}px`;
 
-    cardContainer.appendChild(div);
+    container.appendChild(div);
   }
 
   function parseCardId(cardId) {
