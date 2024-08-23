@@ -140,7 +140,7 @@ body {
 .dealer-hand {
   display: flex;
   flex-direction: row;
-  height: 50vh;
+  height: 40vh;
   grid-column: 2;
   grid-row: 1;
 }
@@ -633,17 +633,10 @@ body {
   opacity: 0.24;
 }
 
-.player-cards {
-  display: flex; /* Using flex to align cards inline */
-  padding: 10px; /* Space around the cards */
-}
-
 /* Individual card styling */
 .card {
-  width: 90px; /* Width of each card */
-  height: 140px; /* Height of each card */
-  background-image: url("https://assets.codepen.io/67732/card-faces.svg");
-  background-size: 1400px 560px; /* Adjust according to the number of cards in the SVG */
+  width: 150px; /* Width of each card */
+  height: 210px; /* Height of each card */
   overflow: hidden;
   margin-right: 10px; /* Space between cards */
 }

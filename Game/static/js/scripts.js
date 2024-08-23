@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
       "K",
     ];
 
-    const cardWidth = 100;
-    const cardHeight = 140;
+    const cardWidth = 150;
+    const cardHeight = 210;
     const svgUrl = "https://assets.codepen.io/67732/card-faces.svg";
 
     container.innerHTML = ""; // Clear previous content
@@ -61,9 +61,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const suitIndex = suits.indexOf(suit);
     const rankIndex = ranks.indexOf(rank);
 
+    // Calculate the correct position to display the card
     const posX = rankIndex * cardWidth;
     const posY = suitIndex * cardHeight;
-    div.style.backgroundPosition = `-${posX}px -${posY + cardHeight}px`;
+    div.style.backgroundPosition = `-${posX}px -${posY}px`;
+
+    // Center the card within the container
+    div.style.display = "block";
+    div.style.margin = "auto";
 
     container.appendChild(div);
   }
