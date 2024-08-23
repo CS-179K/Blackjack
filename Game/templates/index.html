@@ -17,7 +17,7 @@
             <input type="image" id="chip" src="{{ url_for('static', filename='img/poker_chip.svg') }}"></input>
         </form>
     </div>
-        <!-- Dealer Hand -->
+<!-- Dealer Hand -->
         <div class="dealer-hand" style="
         display: flex;
         align-items: center;
@@ -51,38 +51,28 @@
           </div>
           {% endif %}
       </div>
-<!-- PLayer Hand -->
-
-    <div class="player-hands" style="margin-top: 20px">
-        {% for hand, value in player_hands_with_values %}
-        <div class="player-hand" style="
-        display: flex;
-        align-items: center;
-      ">
-            <h2 style="margin-right: 20px; color: #fff">
-                Your Hand {{ loop.index }}:
-            </h2>
-            {% for card in hand %}
-            <div class="card" style="
+<!-- Player Hand -->
+<div class="player-hands" style="margin-top: 20px">
+    {% for hand, value in player_hands_with_values %}
+    <div class="player-hand" style="display: flex; align-items: center;">
+        <h2 style="margin-right: 20px; color: #fff">
+            Your Hand {{ loop.index }}:
+        </h2>
+        {% for card in hand %}
+        <div class="card" data-card-id="{{ card }}" style="
           border: 1px solid #aa1e1e;
           border-radius: 4px;
           background-color: #333;
           color: #fff;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         ">
-                <div class="player-cards">
-                    <div class="player-container">
-                        <div id="card" data-card-id="{{ card }}"></div>
-                        <!-- Additional cards can be added similarly -->
-                    </div>
-                </div>
-                {{ card }}
-            </div>
-            {% endfor %}
-            <p style="color: #fff">Value: {{ value }}</p>
+            <!-- The card's image will be rendered by the updateCards function -->
         </div>
         {% endfor %}
+        <p style="color: #fff">Value: {{ value }}</p>
     </div>
+    {% endfor %}
+</div>
     <div id="results">
             <!-- Game Result -->
     {% if result %}

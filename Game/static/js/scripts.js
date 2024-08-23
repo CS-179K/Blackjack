@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function displayCard(cardId, container) {
-    const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+    const suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
     const ranks = [
       "A",
       "2",
@@ -45,30 +45,34 @@ document.addEventListener("DOMContentLoaded", function () {
       "K",
     ];
 
-    const cardWidth = 150;
-    const cardHeight = 210;
+    // Desired card size
+    const cardWidth = 150; // Adjust to your desired card width
+    const cardHeight = 210; // Adjust to your desired card height
     const svgUrl = "https://assets.codepen.io/67732/card-faces.svg";
 
     container.innerHTML = ""; // Clear previous content
     const div = document.createElement("div");
     div.classList.add("card");
+    div.style.position = "absolute";
+    //div.style.width = "100%";
+    //div.style.height = "100%";
+    div.style.backgroundColor = "#fff";
     div.style.backgroundImage = `url('${svgUrl}')`;
-    div.style.backgroundSize = `${cardWidth * ranks.length}px ${
-      cardHeight * suits.length
-    }px`;
+    div.style.backgroundSize = "auto 400%"; // Keep width auto, scale height to 400%
+    div.style.backgroundRepeat = "no-repeat";
+
+    // Trim any spaces from cardId before processing
     cardId = cardId.trim();
+
     const [rank, suit] = parseCardId(cardId);
     const suitIndex = suits.indexOf(suit);
     const rankIndex = ranks.indexOf(rank);
 
-    // Calculate the correct position to display the card
-    const posX = rankIndex * cardWidth;
-    const posY = suitIndex * cardHeight;
-    div.style.backgroundPosition = `-${posX}px -${posY}px`;
+    // Calculate background position using similar logic to CSS
+    const backgroundPositionX = (rankIndex * 100) / (ranks.length - 1); // Adjust the rank position
+    const backgroundPositionY = (suitIndex * 100) / (suits.length - 1); // Adjust the suit position
 
-    // Center the card within the container
-    div.style.display = "block";
-    div.style.margin = "auto";
+    div.style.backgroundPosition = `${backgroundPositionX}% ${backgroundPositionY}%`;
 
     container.appendChild(div);
   }
@@ -88,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         // Update HTML content
-        document.querySelector(".player-cards").innerHTML =
+        document.querySelector(".player-hands").innerHTML =
           data.player_hands_html;
         document.querySelector(".dealer-hand").innerHTML =
           data.dealer_hand_html;
