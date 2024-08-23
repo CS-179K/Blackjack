@@ -6,8 +6,9 @@ $(document).ready(function () {
       success: function (response) {
         $("body").html(response);
         var contentUpdatedEvent = new Event("contentUpdated");
-        console.log("fart");
+        console.log("fart"); // Necessary functionality testing
         document.dispatchEvent(contentUpdatedEvent);
+        updateCards(); // Dev. Console: Make sure this function updates UI elements correctly
       },
     });
   }
@@ -75,4 +76,32 @@ $(document).ready(function () {
       success: updateGame,
     });
   });
+
+  // for Developer Console function with jQuery AJAX
+  $("#add-card-button").click(function (event) {
+    event.preventDefault();
+    var handType = $("#hand-type").val();
+    var card = $("#card").val();
+    $.ajax({
+      url: "/game/add_card_to_hand",
+      method: "POST",
+      data: {
+        hand_type: handType,
+        card: card,
+      },
+      success: function (response) {
+        $("body").html(response);
+        console.log(response); // See what the server is actually returning
+        updateGame(response);
+      },
+      error: function (xhr, status, error) {
+        console.error("Error adding card:", error);
+      },
+    });
+  });
+
+  function updateCards() {
+    // Ensure this updates your card displays after AJAX updates
+    console.log("Cards updated");
+  }
 });

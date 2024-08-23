@@ -88,6 +88,22 @@
     </h2>
     {% endif %}
 
+    <!-- Developer Console for Adding Cards -->
+    <div id="developer-console">
+      <h3>Developer Console</h3>
+      <form id="add-card-form">
+          <label for="hand-type">Hand Type:</label>
+          <select name="hand_type" id="hand-type">
+              <option value="player">Player</option>
+              <option value="dealer">Dealer</option>
+          </select>
+          <label for="card">Card:</label>
+          <input type="text" id="card" name="card" placeholder="e.g., A of Spades">
+          <button id="add-card-button" type="button" >Add Card</button>
+      </form>
+    </div>
+
+
     </div>
     <div class="grid-buttons">
 
