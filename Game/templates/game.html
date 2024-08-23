@@ -6,7 +6,10 @@
 
 {% endblock %} {% block content %}
 <h1>Blackjack Game</h1>
-<div style="display: flex; flex-direction: column; align-items: center">
+<div
+  id="container-game"
+  style="display: flex; flex-direction: column; align-items: center"
+>
   <!-- Dealer Hand -->
   <div
     class="dealer-hand"
@@ -24,6 +27,7 @@
     {% if show_dealer_hand %} {% for card in dealer_hand %}
     <div
       class="card"
+      data-card-id="{{ card }}"
       style="
         padding: 10px;
         border: 1px solid #aa1e1e;
@@ -33,13 +37,14 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       "
     >
-      {{ card }}
+      <!-- The card's image will be rendered by the updateCards function -->
     </div>
     {% endfor %}
     <p style="color: #fff">Dealer's Score: {{ dealer_hand_value }}</p>
     {% else %}
     <div
       class="card"
+      data-card-id="{% if dealer_hand %} {{ dealer_hand[0] }} {% endif %}"
       style="
         padding: 10px;
         border: 1px solid #aa1e1e;
@@ -49,7 +54,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       "
     >
-      {%if dealer_hand %} {{ dealer_hand[0] }} {% endif %}
+      <!-- The card's image will be rendered by the updateCards function -->
     </div>
     <div
       class="card"
@@ -187,7 +192,8 @@
   <div style="margin-top: 20px">
     {% if not game_over %}
     <a
-      href="{{ url_for('game.player_action', action='hit') }}"
+      id="hit-button"
+      href="#"
       style="
         margin-right: 10px;
         color: #fff;
@@ -200,7 +206,8 @@
       >Hit</a
     >
     <a
-      href="{{ url_for('game.player_action', action='stay') }}"
+      id="stay-button"
+      href="#"
       style="
         margin-right: 10px;
         color: #fff;
@@ -214,7 +221,8 @@
     >
     {% if not splitted %}
     <a
-      href="{{ url_for('game.player_action', action='split') }}"
+      id="split-button"
+      href="#"
       style="
         margin-right: 10px;
         color: #fff;
@@ -228,7 +236,8 @@
     >
     {% endif %}
     <a
-      href="{{ url_for('game.player_action', action='double_down') }}"
+      id="double-down-button"
+      href="#"
       style="
         margin-right: 10px;
         color: #fff;
@@ -241,7 +250,8 @@
       >Double Down</a
     >
     <a
-      href="{{ url_for('game.player_action', action='surrender') }}"
+      id="surrender-button"
+      href="#"
       style="
         color: #fff;
         text-decoration: none;
@@ -347,6 +357,17 @@
     </form>
   </div>
 </div>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+  var gameUrls = {
+    showGame: "{{ url_for('game.show_game') }}",
+    playerAction: "{{ url_for('game.player_action', action='') }}",
+    startNewHand: "{{ url_for('game.start_new_hand') }}",
+    startNewGame: "{{ url_for('game.start_new_game') }}",
+  };
+</script>
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+
 {% endblock %}
 
 <!-- Test -->

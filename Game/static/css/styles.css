@@ -78,7 +78,6 @@ body {
 
 .grid-container {
   display: grid;
-  background-color: #b8b8b879;
   grid-template-columns: 30rem auto;
   grid-template-rows: auto;
   height: 100%;
@@ -123,6 +122,13 @@ body {
   grid-row: 3;
   height: 25vh;
 }
+#results {
+  display: flex;
+  flex-direction: row;
+  grid-column: 3;
+  grid-row: 1;
+  height: 25vh;
+}
 
 .player-cards {
   display: flex;
@@ -131,7 +137,7 @@ body {
   grid-row: 2;
   height: 25vh;
 }
-.dealer-cards {
+.dealer-hand {
   display: flex;
   flex-direction: row;
   height: 50vh;
@@ -200,7 +206,7 @@ body {
   background-color: #af2e0e;
 }
 
-.hit {
+#hit {
   grid-area: hit;
   appearance: none;
   background-color: #ffffff;
@@ -227,24 +233,24 @@ body {
   touch-action: manipulation;
 }
 
-.hit:hover {
+#hit:hover {
   background-color: #7bff00;
   box-shadow: #035815 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.hit:active {
+#hit:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .hit {
+  #hit {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.stay {
+#stay {
   grid-area: stay;
   appearance: none;
   background-color: #ffffff;
@@ -271,24 +277,24 @@ body {
   touch-action: manipulation;
 }
 
-.stay:hover {
+#stay:hover {
   background-color: #f3b60f;
   box-shadow: #583303 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.stay:active {
+#stay:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .stay {
+  #stay {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.split {
+#split {
   grid-column: 1;
   grid-row: 2;
   grid-area: split;
@@ -316,24 +322,24 @@ body {
   touch-action: manipulation;
 }
 
-.split:hover {
+#split:hover {
   background-color: #0febf3;
   box-shadow: #031a58 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.split:active {
+#split:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .split {
+  #split {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.double {
+#double {
   grid-area: double;
   appearance: none;
   background-color: #ffffff;
@@ -360,24 +366,24 @@ body {
   touch-action: manipulation;
 }
 
-.double:hover {
+#double:hover {
   background-color: #fa4b3f;
   box-shadow: #3d0303 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.double:active {
+#double:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .double {
+  #double {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.surrender {
+#surrender {
   grid-area: surrender;
   appearance: none;
   background-color: #ffffff;
@@ -404,18 +410,18 @@ body {
   touch-action: manipulation;
 }
 
-.surrender:hover {
+#surrender:hover {
   background-color: #a6aaa3;
   box-shadow: #252525 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.surrender:active {
+#surrender:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .surrender {
+  #surrender {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
@@ -640,4 +646,12 @@ body {
   background-size: 1400px 560px; /* Adjust according to the number of cards in the SVG */
   overflow: hidden;
   margin-right: 10px; /* Space between cards */
+}
+
+.player-hand {
+  display: flex;
+  flex-direction: row;
+  grid-column: 2;
+  grid-row: 2;
+  height: 25vh;
 }

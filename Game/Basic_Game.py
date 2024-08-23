@@ -266,7 +266,59 @@ def handle_player_action(action):
 @game.route('/player_action/<action>')
 def player_action(action):
     handle_player_action(action)
-    return redirect(url_for('game.show_game'))
+    # Instead of redirecting, render the template directly for AJAX
+    player_hands = session.get('player_hands', [])
+    dealer_hand = session.get('dealer_hand', [])
+    show_dealer_hand = session.get('show_dealer_hand', False)
+    result = session.get('result', None)
+    insurance = session.get('insurance', None)
+    game_over = session.get('game_over', False)
+    splitted = session.get('splitted', False)
+    show_new_hand_button = session.get('show_new_hand_button', False)
+    bet = session.get('bet', 0)
+    show_new_game_button = session.get('show_new_game_button', False)
+    insurance_prompted = session.get('insurance_prompted', False)
+
+    # Calculate player hands' values
+    player_hand_values = [hand_value(hand) for hand in player_hands]
+    player_hands_with_values = list(zip(player_hands, player_hand_values))
+
+    # Check if dealer's face-up card is an Ace
+    dealer_face_up_card = dealer_hand[0] if dealer_hand else None
+    dealer_face_up_is_ace = dealer_face_up_card and dealer_face_up_card.startswith('A')
+
+    # Calculate dealer hand value if Fit should be shown
+    dealer_hand_value = hand_value(dealer_hand) if show_dealer_hand else None
+
+    if dealer_face_up_is_ace and not insurance_prompted and not game_over:
+        session['insurance_prompted'] = True
+        return render_template('index.html',
+                               player_hands_with_values=player_hands_with_values,
+                               dealer_hand=dealer_hand,
+                               dealer_hand_value=dealer_hand_value,
+                               result=result,
+                               insurance=insurance,
+                               game_over=game_over,
+                               splitted=splitted,
+                               show_new_hand_button=show_new_hand_button,
+                               show_new_game_button=show_new_game_button,
+                               show_dealer_hand=show_dealer_hand,
+                               bet=bet,
+                               bankroll=session['bankroll'])
+    else:
+        return render_template('index.html',
+                            player_hands_with_values=player_hands_with_values,
+                            dealer_hand=dealer_hand,
+                            dealer_hand_value=dealer_hand_value,
+                            result=result,
+                            insurance=insurance,
+                            game_over=game_over,
+                            splitted=splitted,
+                            show_new_hand_button=show_new_hand_button,
+                            show_new_game_button=show_new_game_button,
+                            show_dealer_hand=show_dealer_hand,
+                            bet=bet,
+                            bankroll=session['bankroll'])
 
 @game.route('/start_game', methods=['POST'])
 def start_game():
@@ -332,7 +384,7 @@ def show_game():
     dealer_face_up_card = dealer_hand[0] if dealer_hand else None
     dealer_face_up_is_ace = dealer_face_up_card and dealer_face_up_card.startswith('A')
 
-    # Calculate dealer hand value if it should be shown
+    # Calculate dealer hand value if Fit should be shown
     dealer_hand_value = hand_value(dealer_hand) if show_dealer_hand else None
 
     # Show insurance option only if dealer's face-up card is an Ace

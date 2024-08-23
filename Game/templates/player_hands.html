@@ -1,0 +1,11 @@
+<div class="player-container">
+  {% for hand, value in player_hands_with_values %}
+  <div class="player-hand">
+    {% for card in hand %}
+    <div class="card" data-card-id="{{ card }}">{{ card }}</div>
+    {% endfor %}
+    <p>Value: {{ value }}</p>
+  </div>
+  {% endfor %}
+  <script src="/static/js/scripts.js"></script>
+</div>
