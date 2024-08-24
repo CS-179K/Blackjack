@@ -426,20 +426,27 @@ def insurance():
 
     # Check if insurance prompt is valid
     dealer_hand = session.get('dealer_hand', [])
-    dealer_face_up_card = dealer_hand[0] if dealer_hand else None
-    dealer_face_up_is_ace = dealer_face_up_card and dealer_face_up_card.startswith('A')
+    dealer_face_up_card = dealer_hand[0] 
+    dealer_face_up_is_ace = False
+    if dealer_face_up_card and dealer_face_up_card.startswith('A'):
+        dealer_face_up_is_ace = True
+    print(dealer_face_up_card)
+    
 
-    if not dealer_face_up_is_ace:
+    if  dealer_face_up_is_ace!=True:
         # If dealer's face-up card is not an Ace, ignore insurance choice
+        print('not an Ace')
         return redirect(url_for('game.show_game'))
 
     insurance_choice = request.form.get('insurance_choice')
+    print(insurance_choice)
     bet = session.get('bet', 0)
 
     if insurance_choice == 'take':
         session['insurance'] = True
         session['bankroll'] -= bet / 2
     else:
+        print('No Insurance')
         session['insurance'] = False
 
     # Reveal dealer's hand after insurance choice
@@ -455,6 +462,7 @@ def insurance():
 # Developer console
 @game.route('/add_card_to_hand', methods=['POST'])
 def add_card_to_hand():
+    ace_of_spades = "Ace of Spades"
     if 'game_over' in session and session['game_over']:
         return "Game is over. Start a new game to continue.", 400
     
@@ -467,12 +475,14 @@ def add_card_to_hand():
     if hand_type == 'player':
         player_hands = session.get('player_hands', [])
         if player_hands:
-            player_hands[0].insert(0,card)  # add card to the first hand
+            #player_hands[0].insert(0,card)  # add card to the first hand
+            player_hands[0] = [card, card]
             session['player_hands'] = player_hands
             print(player_hands)
     elif hand_type == 'dealer':
         dealer_hand = session.get('dealer_hand', [])
-        dealer_hand.insert(0,card)
+        #dealer_hand.insert(0,card)
+        dealer_hand = [card, card]
         session['dealer_hand'] = dealer_hand
 
     player_hands = session.get('player_hands', [])
