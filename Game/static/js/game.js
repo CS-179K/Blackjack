@@ -105,3 +105,13 @@ $(document).ready(function () {
     console.log("Cards updated");
   }
 });
+
+// Dev console for browser JS console
+function toggleDC() {
+  var consoleDiv = document.getElementById("developer-console");
+  if (consoleDiv.style.display === "none" || consoleDiv.style.display === "") {
+    consoleDiv.style.display = "block"; // Show the console
+  } else {
+    consoleDiv.style.display = "none"; // Hide the console
+  }
+}
