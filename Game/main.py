@@ -21,3 +21,7 @@ def profile():
 @main.route('/game')
 def game():
     return render_template('game.html')
+
+@main.route('/cardcount')
+def cardcount():
+    return render_template('cardcount.html')
