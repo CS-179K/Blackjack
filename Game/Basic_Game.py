@@ -112,7 +112,8 @@ def handle_player_action(action):
         if not any(hand_value(h) <= 21 for h in session.get('player_hands', [])):
             update_game_state(True, 'You bust!')
             session['show_dealer_hand'] = True
-            update_user_stats('loss')
+            if current_user.is_authenticated:
+                update_user_stats('loss')
 
         # Reset doubled down flag
         session['bet'] = original_bet_before_doubling
@@ -134,7 +135,8 @@ def handle_player_action(action):
             if current_hand_index >= len(player_hands):
                 session['current_hand'] = len(player_hands) - 1
         session['player_hands'] = player_hands
-        update_user_stats('loss')
+        if current_user.is_authenticated:
+            update_user_stats('loss')
         return redirect(url_for('game.show_game'))
 
     def resolve_hand():
@@ -153,7 +155,8 @@ def handle_player_action(action):
             else:
                 session['bankroll'] -= bet  # Original bet lost
                 update_game_state(True, 'Dealer has Blackjack. You lose your bet.')
-            update_user_stats('loss')  
+            if current_user.is_authenticated:
+                update_user_stats('loss')  
             return redirect(url_for('game.show_game'))
 
         if dealer_blackjack:
@@ -183,7 +186,8 @@ def handle_player_action(action):
                     else:
                         session['bankroll'] += bet  # Win with the original bet amount
                         update_game_state(True, 'You win!')
-                update_user_stats('win')
+                if current_user.is_authenticated:
+                    update_user_stats('win')
             elif player_hand_value == dealer_hand_value:
                 update_game_state(True, 'Push! It\'s a tie.')
             else:
@@ -194,7 +198,8 @@ def handle_player_action(action):
                 else:
                     session['bankroll'] -= bet  # Loss
                     update_game_state(True, 'Dealer wins.')
-                update_user_stats('loss')
+                if current_user.is_authenticated:
+                    update_user_stats('loss')
 
         # Reset bet and doubled down flag
         session['bet'] = original_bet_before_doubling
@@ -339,8 +344,9 @@ def start_game():
 
     session['bet'] = bet
     initialize_game()
-    current_user.bank = session['bankroll']
-    db.session.commit()
+    if current_user != 'AnonymousUserMixin':
+        current_user.bank = session['bankroll']
+        db.session.commit()
     return redirect(url_for('game.show_game'))
 
 @game.route('/start_new_hand', methods=['POST'])
@@ -360,8 +366,9 @@ def start_new_hand():
 def start_new_game():
     session['bankroll'] = 1000  # Reset bankroll
     initialize_game()
-    current_user.bank = session['bankroll']
-    db.session.commit()
+    if current_user != 'AnonymousUserMixin':
+        current_user.bank = session['bankroll']
+        db.session.commit()
     session['result'] = None  # Clear result
     session['show_new_game_button'] = False
     session['show_new_hand_button'] = False
