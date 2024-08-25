@@ -51,4 +51,7 @@ def create_app():
     from .cardcount import cardcount as cardcount_blueprint
     app.register_blueprint(cardcount_blueprint, url_prefix='/cardcount')
 
+    from .basicstrategy import basicstrategy as basicstrategy_blueprint
+    app.register_blueprint(basicstrategy_blueprint, url_prefix='/basicstrategy')
+
     return app
