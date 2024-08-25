@@ -88,6 +88,26 @@
     </h2>
     {% endif %}
 
+    <!-- Developer Console for Split and Insurance -->
+    <div id="developer-console" style="display: none;"> <!-- initially hidden -->>
+      <h3>Developer Console</h3>
+      <form id="add-card-form">
+          <label for="hand-type">Hand Type:</label>
+          <select name="hand_type" id="hand-type">
+              <option value="player">Player</option>
+              <option value="dealer">Dealer</option>
+          </select>
+          <label for="card">Card:</label>
+          <select name="card" id="card">
+            <optgroup>
+                <option value="A of Spades">Ace of Spades</option>
+            </optgroup>
+          </select>
+          <button id="add-card-button" type="button" >Add Card</button>
+      </form>
+    </div>
+
+
     </div>
     <div class="grid-buttons">
 

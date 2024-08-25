@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<style>
+  #result-box {
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    width: 250px;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    text-align: center;
+  }
+
+  #result-box.correct {
+    background-color: #28a745;
+  }
+
+  #result-box.incorrect {
+    background-color: #dc3545;
+  }
+
+  #result-box.waiting {
+    background-color: #444;
+  }
+
+  .card {
+    width: 150px;
+    height: 210px;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="grid-container">
+    <!-- Bankroll, Current Bet and Betting -->
+    <div class="chips">Bankroll: ${{ bankroll }}
+        <p id="current-bet">Current Bet: ${{ bet }}</p>
+        <form id="bet-amount" action="{{ url_for('cardcount.start_game') }}" method="post" style="display: flex; gap: 10px;">
+            <label for="bet" style="color: #fff;">Bet Amount:</label>
+            <input type="number" id="bet" name="bet" min="1" max="{{ bankroll }}" required
+                style="padding: 5px; border-radius: 4px;">
+            <input type="image" id="chip" src="{{ url_for('static', filename='img/poker_chip.svg') }}"></input>
+        </form>
+    </div>
+
+    <!-- Dealer Hand -->
+    <div class="dealer-hand" style="display: flex; align-items: center;">
+        <h2 style="margin-right: 20px; color: #fff">Dealer Hand:</h2>
+        {% if show_dealer_hand %}
+        {% for card in dealer_hand %}
+        <div class="card" data-card-id="{{ card }}" style="border: 1px solid #aa1e1e; border-radius: 4px; background-color: #333; color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            {{ card }}
+        </div>
+        {% endfor %}
+        <p style="color: #f10000">Dealer's Score: {{ dealer_hand_value }}</p>
+        {% else %}
+        <div class="card" data-card-id="{{ dealer_hand[0] if dealer_hand else 'Card' }}" style="border: 1px solid #aa1e1e; border-radius: 4px; background-color: #333; color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            {{ dealer_hand[0] if dealer_hand else 'Card' }}
+        </div>
+        <div class="card" style="padding: 10px; border: 1px solid #aa1e1e; border-radius: 4px; background-color: #333; color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+            Hidden Card
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Player Hand -->
+    <div class="player-hands" style="margin-top: 20px;">
+        {% for hand, value in player_hands_with_values %}
+        <div class="player-hand" style="display: flex; align-items: center;">
+            <h2 style="margin-right: 20px; color: #fff">Your Hand {{ loop.index }}:</h2>
+            {% for card in hand %}
+            <div class="card" data-card-id="{{ card }}" style="border: 1px solid #aa1e1e; border-radius: 4px; background-color: #333; color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+                {{ card }}
+            </div>
+            {% endfor %}
+            <p style="color: #fff">Value: {{ value }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Game Result -->
+    {% if result %}
+    <h2 style="background-color: #333; color: #fff; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); margin-top: 20px;">
+        Result: {{ result }}
+    </h2>
+    {% endif %}
+
+    <!-- Game Actions -->
+    <div id="game-buttons" style="margin-top: 20px;">
+        {% if not game_over %}
+        <a href="{{ url_for('cardcount.player_action', action='hit') }}" style="margin-right: 10px; color: #fff; text-decoration: none; background-color: #007bff; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Hit</a>
+
+        <a href="{{ url_for('cardcount.player_action', action='stay') }}" style="margin-right: 10px; color: #fff; text-decoration: none; background-color: #ffc107; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Stay</a>
+
+        {% if not splitted %}
+        <a href="{{ url_for('cardcount.player_action', action='split') }}" style="margin-right: 10px; color: #fff; text-decoration: none; background-color: #dc3545; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Split</a>
+        {% endif %}
+
+        <a href="{{ url_for('cardcount.player_action', action='double_down') }}" style="margin-right: 10px; color: #fff; text-decoration: none; background-color: #dc3545; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Double Down</a>
+
+        <a href="{{ url_for('cardcount.player_action', action='surrender') }}" style="color: #fff; text-decoration: none; background-color: #6c757d; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Surrender</a>
+        {% endif %}
+
+
+    </div>
+
+    <!-- New Game Buttons -->
+    <div style="margin-top: 20px;">
+        <form action="{{ url_for('cardcount.start_new_hand') }}" method="post" style="display: inline;">
+            <button type="submit" style="margin-right: 10px; color: #fff; background-color: #007bff; border: none; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Start New Hand</button>
+        </form>
+
+        <form action="{{ url_for('cardcount.start_new_game') }}" method="post" style="display: inline;">
+            <button type="submit" style="color: #fff; background-color: #28a745; border: none; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Start New Game</button>
+        </form>
+    </div>
+
+    <!-- Result Box -->
+    <div id="result-box" class="{% if session['user_count_correct'] %}correct{% elif session['user_count_result'] %}incorrect{% else %}waiting{% endif %}">
+        <p>{% if session['user_count_result'] %}{{ session['user_count_result'] }}{% else %}Waiting for input...{% endif %}</p>
+    </div>
+
+    <!-- Card Count Submission -->
+    <div class="card-count-section" style="margin-top: 20px">
+      <h3 style="color: black">Enter Card Count (Hi-Lo)</h3>
+      <form method="POST" action="{{ url_for('cardcount.check_card_count') }}">
+          <label for="user_count" style="color: #fff">Your Card Count Guess:</label>
+          <input type="number" id="user_count" name="user_count" required style="padding: 5px; border-radius: 4px" />
+          <button type="submit" style="color: #fff; background-color: #007bff; border: none; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Submit</button>
+      </form>
+    </div>
+</div>
+
+{% endblock %}
