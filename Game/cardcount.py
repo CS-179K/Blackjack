@@ -222,9 +222,11 @@ def handle_player_action(action):
         session['current_hand'] += 1
 
         if session['current_hand'] >= len(player_hands):
+            print("dealer tunr")
             dealer_turn()
             return resolve_hand() 
         else:
+            print("end game")
             return redirect(url_for('cardcount.show_game'))
 
     elif action == 'split':
@@ -280,36 +282,7 @@ def player_action(action):
     # Handle player action 
     handle_player_action(action)
     
-    player_hands = session.get('player_hands', [])
-    dealer_hand = session.get('dealer_hand', [])
-    show_dealer_hand = session.get('show_dealer_hand', False)
-    result = session.get('result', None)
-    insurance = session.get('insurance', None)
-    game_over = session.get('game_over', False)
-    splitted = session.get('splitted', False)
-    show_new_hand_button = session.get('show_new_hand_button', False)
-    bet = session.get('bet', 0)
-    show_new_game_button = session.get('show_new_game_button', False)
-    insurance_prompted = session.get('insurance_prompted', False)
-
-    player_hand_values = [hand_value(hand) for hand in player_hands]
-    player_hands_with_values = list(zip(player_hands, player_hand_values))
-
-    dealer_hand_value = hand_value(dealer_hand) if show_dealer_hand else None
-
-    return render_template('cardcount.html',
-                           player_hands_with_values=player_hands_with_values,
-                           dealer_hand=dealer_hand,
-                           dealer_hand_value=dealer_hand_value,
-                           result=result,
-                           insurance=insurance,
-                           game_over=game_over,
-                           splitted=splitted,
-                           show_new_hand_button=show_new_hand_button,
-                           show_new_game_button=show_new_game_button,
-                           show_dealer_hand=show_dealer_hand,
-                           bet=bet,
-                           bankroll=session['bankroll'])
+    return redirect(url_for('cardcount.show_game'))
 
 @cardcount.route('/start_game', methods=['POST'])
 def start_game():
