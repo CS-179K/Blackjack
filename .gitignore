@@ -3,3 +3,4 @@ __pycache__
 poop
 flask/*
 flask_session/*
+flask_session/*
