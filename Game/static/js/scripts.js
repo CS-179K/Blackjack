@@ -113,7 +113,6 @@ function updateGame() {
   xhr.onload = function () {
     if (xhr.status === 200) {
       document.getElementById("container-game").innerHTML = xhr.responseText;
-
       // Create and dispatch the custom event
       var event = new Event("contentUpdated");
       document.dispatchEvent(event);

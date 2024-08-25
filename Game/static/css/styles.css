@@ -111,9 +111,6 @@ body {
   max-width: 100%;
   margin-left: 1rem;
 }
-.Fart {
-  align-self: center;
-}
 
 .game-buttons {
   display: flex;
@@ -140,7 +137,7 @@ body {
 .dealer-hand {
   display: flex;
   flex-direction: row;
-  height: 40vh;
+  height: 18vh;
   grid-column: 2;
   grid-row: 1;
 }
@@ -706,4 +703,28 @@ body {
   grid-column: 2;
   grid-row: 2;
   height: 25vh;
+  margin-left: 2rem;
+}
+
+.player-hands {
+  display: flex;
+}
+
+/* Chip animations */
+#chip {
+  transition: transform 0.5s ease; /* Smooth transition for scaling */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#chip:hover {
+  transform: scale(2.5); /* Only scale here */
+  animation: spin 2s infinite linear; /* Apply the spinning animation */
 }
