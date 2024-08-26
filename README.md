@@ -9,25 +9,26 @@ A blackjack simulator designed to help blackjack enthusiasts or new players inte
 ## **Instruction & Usage Instructions**
 Installation Instructions for Linux:<br>
 Step 1:<br>
-Open terminal, and run command sudo apt install git // this is to install git<br>
+  Open terminal, and run command sudo apt install git // this is to install git<br>
 Step 2:<br>
-Run command git clone https://github.com/CS-179K/Blackjack.git, Path to Blackjack Folder<br>
+  Run command git clone https://github.com/CS-179K/Blackjack.git, Path to Blackjack Folder<br>
 Step 3:<br>
-Run command sudo apt install python-pip // This is to install pip<br>
+  Run command sudo apt install python-pip // This is to install pip<br>
 Step 4:
-Run command pip install -r requirements.txt<br>
+  Run command pip install -r requirements.txt<br>
 Step 5:<br>
-Run commmad sudo apt install python3-flask<br>
+  Run commmad sudo apt install python3-flask<br>
 Step 6:<br>
-Run command flask --app Game --debug run<br>
+  Run command flask --app Game --debug run<br>
 Step 7:<br>
-Click on the link in terminal<br>
+  Click on the link in terminal<br>
 
 Usage Instructions:<br>
-Option 1: Play blackjack from the home screen.<br>
-Option 2: Checkout Different Gamemodes like Count Cards Practice, Normal Game, or Basic Stratgey Practice<br>
-Every gamemode will provide buttons to press to play blackjack ie. hit, stay, double, insurance, surrender, and betting on (specific gamemodes)<br>
-If you are interested in saving your highscore, bankroll, wins, and total games played. Consider registering an account, so that you are able to login into your account to pick up where you left off!<br>
+  Option 1: Play blackjack from the home screen.<br>
+  Option 2: Checkout Different Gamemodes like Count Cards Practice, Normal Game, or Basic Stratgey Practice<br>
+
+  Every gamemode will provide buttons to press to play blackjack ie. hit, stay, double, insurance, surrender, and betting on (specific gamemodes)<br>
+  If you are interested in saving your highscore, bankroll, wins, and total games played. Consider registering an account, so that you are able to login into your account to pick up where you left off!<br>
 
 ## **Details**
 **Major Functional Features**
