@@ -16,12 +16,34 @@ Installation Instructions for Linux:<br>
 6. Run command flask --app Game --debug run
 7. Click on the link in terminal
 
-## **Usage Instructions**
-Option 1: Play blackjack from the home screen.<br>
-Option 2: Checkout Different Gamemodes like Count Cards Practice, Normal Game, or Basic Stratgey Practice<br>
+Installation Instructions for Window:<br>
+1. Install Git from their website https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+2. Clone the git repository with git clone https://github.com/CS-179K/Blackjack.git
+3. Download and install Python from https://www.python.org/downloads/ // Latest Verision, Remember to check the box to add python to PATH during installation
+4. Verify pip is install by running command pip --version in the command prompt
+5. Run command pip install -r requirements.txt
+6. Run commmad pip show flask //if flask is not installed, install it with pip install flask
+7. Run command flask --app Game --debug run
+8. Click on the link in command prompt
 
-Every gamemode will provide buttons to press to play blackjack ie. hit, stay, double, insurance, surrender, and betting on (specific gamemodes)<br>
-If you are interested in saving your highscore, bankroll, wins, and total games played. Consider registering an account, so that you are able to login into your account to pick up where you left off!<br>
+Installation Instructions for macOS:<br>
+1. Install Homebrew via this command in terminal /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+2. Install Git via this command in terminal brew install git
+3. Clone git repository via this command git clone https://github.com/CS-179K/Blackjack.git
+4. Path to the Blackjack Folder in terminal via cd
+5. Verify that python is installed on device with command python3 --version
+6. Install pip with command sudo easy_install pip
+7. Run the command pip3 install -r requirements.txt
+8. Run the command pip3 show flask
+9. Run the command flask --app Game --debug run
+10. Access the application via the link in terminal output
+
+## **Usage Instructions**
+Option 1: Start a game of blackjack directly from the home screen.
+Option 2: Explore various game modes such as Card Counting Practice, Standard Game, or Basic Strategy Training.
+
+Each game mode features buttons for actions like Hit, Stay, Double, Insurance, Surrender, and specific betting options.
+To save your high scores, bankroll, wins, and total games played, consider creating an account. Registering will allow you to log in and continue your progress seamlessly!
 
 ## **Details**
 **Major Functional Features**
