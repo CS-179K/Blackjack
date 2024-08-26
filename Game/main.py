@@ -26,3 +26,7 @@ def game():
 @main.route('/cardcount')
 def cardcount():
     return render_template('cardcount.html')
+
+@main.route('/basicstrategy')
+def basicstrategy():
+        return render_template('basicstrategy.html')
