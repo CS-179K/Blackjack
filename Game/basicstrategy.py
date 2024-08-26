@@ -59,7 +59,7 @@ def initialize_game(shuffle_deck_flag=True):
     session['show_new_game_button'] = False
     session['insurance_prompted'] = False
     session['dealer_blackjack'] = False
-    session['doubled_down'] = False
+    session['double_down'] = False
     session['original_bet_before_doubling'] = session.get('bet', 0)
 
 def dealer_turn():
@@ -87,32 +87,32 @@ def basic_strategy(player_total, dealer_value, soft):
     if player_total == 9:
         if dealer_value in [1, 2, 7, 8, 9, 10]:
             return 'hit'
-        return 'double'
+        return 'double_down'
     if player_total == 10:
         if dealer_value in [1, 10]:
             return 'hit'
-        return 'double'
+        return 'double_down'
     if player_total == 11:
         if dealer_value == 1:
             return 'hit'
-        return 'double'
+        return 'double_down'
     
     if soft:
         if player_total in [12, 13, 14]:
             if dealer_value in [5, 6]:
-                return 'double'
+                return 'double_down'
             return 'hit'
         if player_total in [15, 16]:
             if dealer_value in [4, 5, 6]:
-                return 'double'
+                return 'double_down'
             return 'hit'
         if player_total == 17:
             if dealer_value in [3, 4, 5, 6]:
-                return 'double'
+                return 'double_down'
             return 'hit'
         if player_total == 18:
             if dealer_value in [3, 4, 5, 6]:
-                return 'double'
+                return 'double_down'
             if dealer_value in [2, 7, 8]:
                 return 'stand'
             return 'hit'
@@ -146,7 +146,7 @@ def handle_player_action(action):
         return redirect(url_for('basicstrategy.show_game'))
 
     original_bet = session.get('bet', 0)
-    doubled_down = session.get('doubled_down', False)
+    double_down = session.get('double_down', False)
     original_bet_before_doubling = session.get('original_bet_before_doubling', original_bet)
 
     dealer_card_value = card_values.get(dealer_hand[0].split()[0], 0)
@@ -170,21 +170,21 @@ def handle_player_action(action):
 
     def handle_bust():
         bet = session.get('bet', 0)
-        if doubled_down:
+        if double_down:
             session['bankroll'] -= (original_bet_before_doubling * 2)
         else:
             session['bankroll'] -= bet
 
         session['show_dealer_hand'] = True
         session['bet'] = original_bet_before_doubling
-        session['doubled_down'] = False
+        session['double_down'] = False
 
         return redirect(url_for('basicstrategy.show_game'))
 
     def handle_surrender():
-        if doubled_down:
+        if double_down:
             session['bankroll'] += original_bet_before_doubling
-            session['doubled_down'] = False
+            session['double_down'] = False
         else:
             session['bankroll'] -= session.get('bet', 0) / 2
 
@@ -206,7 +206,7 @@ def handle_player_action(action):
         bet = session.get('bet', 0)
         insurance = session.get('insurance', False)
         dealer_blackjack = session.get('dealer_blackjack', False)
-        doubled_down = session.get('doubled_down', False)
+        double_down = session.get('double_down', False)
         original_bet_before_doubling = session.get('original_bet_before_doubling', bet)
 
         if dealer_blackjack:
@@ -227,16 +227,16 @@ def handle_player_action(action):
                 continue
 
             if dealer_hand_value > 21 or player_hand_value > dealer_hand_value:
-                session['bankroll'] += original_bet_before_doubling * (3 if doubled_down else 1.5)
+                session['bankroll'] += original_bet_before_doubling * (3 if double_down else 1.5)
                 update_game_state(True, 'You win!')
             elif player_hand_value == dealer_hand_value:
                 update_game_state(True, 'Push! It\'s a tie.')
             else:
-                session['bankroll'] -= original_bet_before_doubling * (2 if doubled_down else 1)
+                session['bankroll'] -= original_bet_before_doubling * (2 if double_down else 1)
                 update_game_state(True, 'Dealer wins.')
 
         session['bet'] = original_bet_before_doubling
-        session['doubled_down'] = False
+        session['double_down'] = False
 
         return redirect(url_for('basicstrategy.show_game'))
 
@@ -269,7 +269,7 @@ def handle_player_action(action):
     elif action == 'double_down':
         if len(hand) == 2:
             hand.append(deal_card())
-            session['doubled_down'] = True
+            session['double_down'] = True
             session['player_hands'] = player_hands
             if hand_value(hand) > 21:
                 return handle_bust()
@@ -278,7 +278,7 @@ def handle_player_action(action):
                 if session['current_hand'] >= len(player_hands):
                     dealer_turn()
                     return resolve_hand()
-        session['result'] = 'Correct' if correct_action == 'double' else 'Incorrect'
+        session['result'] = 'Correct' if correct_action == 'double_down' else 'Incorrect'
 
     elif action == 'surrender':
         session['result'] = 'Correct' if correct_action == 'surrender' else 'Incorrect'
