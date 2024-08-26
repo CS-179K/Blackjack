@@ -6,29 +6,22 @@ By Mario Martinez (mmart477), Ocean Chen (ochen011), Ted Voo (tvoo001), Alec Bog
 ## **Project Idea**
 A blackjack simulator designed to help blackjack enthusiasts or new players interested in learning the game by providing a digital environment where users can practice and refine blackjack skills. The simulator replicates real-life blackjack games, allowing the user to play multiple hands, practice card counting, and master basic strategy without committing real money.
 
-## **Instruction & Usage Instructions**
+## **Installation Instruction**
 Installation Instructions for Linux:<br>
-Step 1:<br>
-  Open terminal, and run command sudo apt install git // this is to install git<br>
-Step 2:<br>
-  Run command git clone https://github.com/CS-179K/Blackjack.git, Path to Blackjack Folder<br>
-Step 3:<br>
-  Run command sudo apt install python-pip // This is to install pip<br>
-Step 4:
-  Run command pip install -r requirements.txt<br>
-Step 5:<br>
-  Run commmad sudo apt install python3-flask<br>
-Step 6:<br>
-  Run command flask --app Game --debug run<br>
-Step 7:<br>
-  Click on the link in terminal<br>
+1. Open terminal, and run command sudo apt install git // this is to install git
+2. Run command git clone https://github.com/CS-179K/Blackjack.git, Path to Blackjack Folder
+3. Run command sudo apt install python-pip // This is to install pip
+4. Run command pip install -r requirements.txt
+5. Run commmad sudo apt install python3-flask
+6. Run command flask --app Game --debug run
+7. Click on the link in terminal
 
-Usage Instructions:<br>
-  Option 1: Play blackjack from the home screen.<br>
-  Option 2: Checkout Different Gamemodes like Count Cards Practice, Normal Game, or Basic Stratgey Practice<br>
+## **Usage Instructions**
+Option 1: Play blackjack from the home screen.<br>
+Option 2: Checkout Different Gamemodes like Count Cards Practice, Normal Game, or Basic Stratgey Practice<br>
 
-  Every gamemode will provide buttons to press to play blackjack ie. hit, stay, double, insurance, surrender, and betting on (specific gamemodes)<br>
-  If you are interested in saving your highscore, bankroll, wins, and total games played. Consider registering an account, so that you are able to login into your account to pick up where you left off!<br>
+Every gamemode will provide buttons to press to play blackjack ie. hit, stay, double, insurance, surrender, and betting on (specific gamemodes)<br>
+If you are interested in saving your highscore, bankroll, wins, and total games played. Consider registering an account, so that you are able to login into your account to pick up where you left off!<br>
 
 ## **Details**
 **Major Functional Features**
