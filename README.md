@@ -6,6 +6,8 @@ By Mario Martinez (mmart477), Ocean Chen (ochen011), Ted Voo (tvoo001), Alec Bog
 ## **Project Idea**
 A blackjack simulator designed to help blackjack enthusiasts or new players interested in learning the game by providing a digital environment where users can practice and refine blackjack skills. The simulator replicates real-life blackjack games, allowing the user to play multiple hands, practice card counting, and master basic strategy without committing real money.
 
+## **Instruction & Usage Instructions**
+
 ### **Details**
 
 **Major Functional Features**
