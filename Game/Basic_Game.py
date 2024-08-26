@@ -500,7 +500,7 @@ def add_card_to_hand():
         if player_hands:
             #player_hands[0].insert(0,card)  # add card to the first hand
             if card == '10 of Spades':
-                player_hands[0] = [card, 'A of Spades']
+                player_hands[0] = [card, card]
             else:
                 player_hands[0] = [card, card]
             session['player_hands'] = player_hands
@@ -509,7 +509,7 @@ def add_card_to_hand():
         dealer_hand = session.get('dealer_hand', [])
         #dealer_hand.insert(0,card)
         if card == '10 of Spades':
-            dealer_hand = [card, 'A of Spades']
+            dealer_hand = [ 'A of Spades',card]
         else:
             dealer_hand = [card, 'card']
         session['dealer_hand'] = dealer_hand

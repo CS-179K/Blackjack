@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
     div.style.position = "absolute";
     //div.style.width = "100%";
     //div.style.height = "100%";
-    div.style.backgroundColor = "#fff";
     div.style.backgroundImage = `url('${svgUrl}')`;
     div.style.backgroundSize = "auto 400%"; // Keep width auto, scale height to 400%
     div.style.backgroundRepeat = "no-repeat";
