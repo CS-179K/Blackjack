@@ -306,6 +306,7 @@ def player_action(action):
 
     if dealer_face_up_is_ace and not insurance_prompted and not game_over:
         session['insurance_prompted'] = True
+        print("Insurance on")
         return render_template('index.html',
                                player_hands_with_values=player_hands_with_values,
                                dealer_hand=dealer_hand,
@@ -402,16 +403,21 @@ def show_game():
     # Check if dealer's face-up card is an Ace
     dealer_face_up_card = dealer_hand[0] if dealer_hand else None
     dealer_face_up_is_ace = dealer_face_up_card and dealer_face_up_card.startswith('A')
+    if dealer_face_up_card and dealer_face_up_card.startswith('A'):
+        dealer_face_up_is_ace = True
+        insurance_prompted=True
+    print(dealer_face_up_card,dealer_face_up_is_ace)
 
     # Calculate dealer hand value if Fit should be shown
     dealer_hand_value = hand_value(dealer_hand) if show_dealer_hand else None
 
     # Show insurance option only if dealer's face-up card is an Ace
-    if dealer_face_up_is_ace and not insurance_prompted and not game_over:
+    if dealer_face_up_is_ace  and not game_over and insurance!=False:
         session['insurance_prompted'] = True
         return render_template('index.html',
                                player_hands_with_values=player_hands_with_values,
                                dealer_hand=dealer_hand,
+                               insurance_prompted=insurance_prompted,
                                dealer_hand_value=dealer_hand_value,
                                result=result,
                                insurance=insurance,
