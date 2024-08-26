@@ -1,9 +1,54 @@
 <!-- templates/profile.html -->
-
-{% extends "base.html" %}
-
-{% block content %}
-<h1 class="title">
-  Welcome, {{ name }}!
-</h1>
+{% extends "base.html" %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/profile.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/styles.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
+/>
+<link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}" />
+{% endblock %} {% block content %}
+<div class="profile-container" style="display: flex; justify-content: center">
+  <div id="profile-content" style="color: white">
+    <div class="black profile-card">
+      <section>
+        <span class="p-span">Games:</span
+        ><span class="p-span">{{ games }}</span>
+      </section>
+      <section>♠</section>
+    </div>
+    <div class="red profile-card">
+      <section>
+        <span class="p-span">Wins:</span><span class="p-span">{{ wins }}</span>
+      </section>
+      <section>♥</section>
+    </div>
+    <div class="black profile-card">
+      <section>
+        <span class="p-span">High Score:</span
+        ><span class="p-span">{{ high_score }}</span>
+      </section>
+      <section>♣</section>
+    </div>
+    <div class="red profile-card">
+      <section>
+        <span class="p-span">Bank:</span><span class="p-span">{{ bank }}</span>
+      </section>
+      <section>♦</section>
+    </div>
+    <div class="red profile-card">
+      <section>
+        <span class="p-span" n>Welcome</span
+        ><span class="p-span">{{ name }}</span>
+      </section>
+      <section>♥</section>
+    </div>
+  </div>
+</div>
 {% endblock %}

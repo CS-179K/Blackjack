@@ -17,7 +17,7 @@ def gamemodes():
 @main.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', name=current_user.name)
+    return render_template('profile.html', name=current_user.name, games=current_user.games, bank=current_user.bank, high_score=current_user.high_score, wins=current_user.wins)
 
 @main.route('/game')
 def game():

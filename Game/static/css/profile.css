@@ -1,0 +1,162 @@
+:root {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  --profile-card-width: 14rem;
+  --profile-card-animation: slide-down 1s ease-in-out backwards;
+
+  height: 100%;
+}
+
+.p-span {
+  color: red;
+  width: 0;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+
+  font-family: "Space Grotesk", "Roboto", sans-serif;
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    rotate: 45deg;
+    transform: translateX(50vw) translateY(-50vh) rotate(5deg);
+  }
+
+  40% {
+    opacity: 100%;
+  }
+
+  75% {
+    transform: translateX(0) translateY(0) rotate(0);
+  }
+
+  100% {
+    transform: translateX(inset) translateY(inset) rotate(inset);
+  }
+}
+
+.profile-card {
+  overflow: hidden;
+}
+
+.profile-card:nth-of-type(1) {
+  rotate: -45deg;
+
+  animation: var(--profile-card-animation);
+}
+.profile-card:nth-of-type(1):hover {
+  transform: translateX(calc(-2rem * sin(40deg)))
+    translateY(calc(-2rem * cos(40deg))) rotate(-10deg);
+}
+
+.profile-card:nth-of-type(2) {
+  rotate: -30deg;
+
+  animation: var(--profile-card-animation) 0.2s;
+}
+.profile-card:nth-of-type(2):hover {
+  transform: translateX(calc(-2rem * sin(35deg)))
+    translateY(calc(-2rem * cos(35deg))) rotate(-5deg);
+}
+
+.profile-card:nth-of-type(3) {
+  rotate: -15deg;
+
+  animation: var(--profile-card-animation) 0.4s;
+}
+.profile-card:nth-of-type(3):hover {
+  transform: translateX(calc(-2rem * sin(20deg)))
+    translateY(calc(-2rem * cos(20deg))) rotate(-5deg);
+}
+
+.profile-card:nth-of-type(4) {
+  animation: var(--profile-card-animation) 0.6s;
+}
+.profile-card:nth-of-type(4):hover {
+  transform: translateX(calc(-2rem * sin(5deg)))
+    translateY(calc(-2rem * cos(5deg))) rotate(-5deg);
+}
+
+.profile-card:nth-of-type(5) {
+  rotate: 15deg;
+
+  animation: var(--profile-card-animation) 0.8s;
+}
+.profile-card:nth-of-type(5):hover {
+  transform: translateX(calc(-4rem * sin(10deg)))
+    translateY(calc(-3rem * cos(10deg))) rotate(-5deg);
+}
+
+.profile-card {
+  background-color: lightgray;
+
+  width: var(--profile-card-width);
+  aspect-ratio: 2/3;
+  border-radius: 1rem;
+
+  position: absolute;
+  top: calc(50% - (var(--profile-card-width) * 1.5 / 2));
+  right: calc(50% - (var(--profile-card-width) / 1.5));
+  transform-origin: 10% 90%;
+
+  box-shadow: 0px 0px 2.2px rgba(0, 0, 0, 0.02),
+    0px 0px 5.3px rgba(0, 0, 0, 0.028), 0px 0px 10px rgba(0, 0, 0, 0.035),
+    0px 0px 17.9px rgba(0, 0, 0, 0.042), 0px 0px 33.4px rgba(0, 0, 0, 0.05),
+    0px 0px 80px rgba(0, 0, 0, 0.07);
+  border: solid 2px #78787800;
+  object-fit: scale-down;
+
+  transition: rotate 0.15s ease-in-out, transform 0.22s ease-in-out;
+
+  cursor: pointer;
+}
+
+.selected {
+  border: solid 2px #787878;
+}
+
+.profile-card:hover {
+  filter: brightness(1.03);
+}
+
+.profile-card:hover + .profile-card {
+  transform: rotate(15deg);
+}
+
+.profile-card:hover + .profile-card + .profile-card {
+  transform: rotate(5deg);
+}
+
+.black {
+  color: #141414;
+}
+
+.red {
+  color: #de4b4b;
+}
+
+.profile-card section:nth-child(1) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  width: 2rem;
+
+  font-size: 2rem;
+}
+
+.profile-card section:nth-child(2) {
+  position: absolute;
+  left: calc(50% - 3.5rem);
+  top: calc(50% - 5rem);
+
+  width: 6rem;
+  height: 12rem;
+
+  font-size: 12rem;
+}
+
+section .p-span:nth-child(2) {
+  font-size: 3rem;
+}
