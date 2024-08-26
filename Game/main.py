@@ -14,6 +14,7 @@ def index():
 def gamemodes():
     return render_template('gamemodes.html')
 
+@main.route('/profile')
 @login_required
 def profile():
     return render_template('profile.html', name=current_user.name)
@@ -21,3 +22,11 @@ def profile():
 @main.route('/game')
 def game():
     return render_template('game.html')
+
+@main.route('/cardcount')
+def cardcount():
+    return render_template('cardcount.html')
+
+@main.route('/basicstrategy')
+def basicstrategy():
+        return render_template('basicstrategy.html')

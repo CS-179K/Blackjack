@@ -78,7 +78,6 @@ body {
 
 .grid-container {
   display: grid;
-  background-color: #b8b8b879;
   grid-template-columns: 30rem auto;
   grid-template-rows: auto;
   height: 100%;
@@ -112,15 +111,19 @@ body {
   max-width: 100%;
   margin-left: 1rem;
 }
-.Fart {
-  align-self: center;
-}
 
 .game-buttons {
   display: flex;
   flex-direction: row;
   grid-column: 2;
   grid-row: 3;
+  height: 25vh;
+}
+#results {
+  display: flex;
+  flex-direction: row;
+  grid-column: 3;
+  grid-row: 1;
   height: 25vh;
 }
 
@@ -131,10 +134,10 @@ body {
   grid-row: 2;
   height: 25vh;
 }
-.dealer-cards {
+.dealer-hand {
   display: flex;
   flex-direction: row;
-  height: 50vh;
+  height: 18vh;
   grid-column: 2;
   grid-row: 1;
 }
@@ -200,7 +203,7 @@ body {
   background-color: #af2e0e;
 }
 
-.hit {
+#hit {
   grid-area: hit;
   appearance: none;
   background-color: #ffffff;
@@ -227,24 +230,24 @@ body {
   touch-action: manipulation;
 }
 
-.hit:hover {
+#hit:hover {
   background-color: #7bff00;
   box-shadow: #035815 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.hit:active {
+#hit:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .hit {
+  #hit {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.stay {
+#stay {
   grid-area: stay;
   appearance: none;
   background-color: #ffffff;
@@ -271,24 +274,24 @@ body {
   touch-action: manipulation;
 }
 
-.stay:hover {
+#stay:hover {
   background-color: #f3b60f;
   box-shadow: #583303 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.stay:active {
+#stay:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .stay {
+  #stay {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.split {
+#split {
   grid-column: 1;
   grid-row: 2;
   grid-area: split;
@@ -316,24 +319,24 @@ body {
   touch-action: manipulation;
 }
 
-.split:hover {
+#split:hover {
   background-color: #0febf3;
   box-shadow: #031a58 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.split:active {
+#split:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .split {
+  #split {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.double {
+#double {
   grid-area: double;
   appearance: none;
   background-color: #ffffff;
@@ -360,24 +363,24 @@ body {
   touch-action: manipulation;
 }
 
-.double:hover {
+#double:hover {
   background-color: #fa4b3f;
   box-shadow: #3d0303 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.double:active {
+#double:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .double {
+  #double {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
 }
 
-.surrender {
+#surrender {
   grid-area: surrender;
   appearance: none;
   background-color: #ffffff;
@@ -404,18 +407,18 @@ body {
   touch-action: manipulation;
 }
 
-.surrender:hover {
+#surrender:hover {
   background-color: #a6aaa3;
   box-shadow: #252525 0 -6px 8px inset;
   transform: scale(1.125);
 }
 
-.surrender:active {
+#surrender:active {
   transform: scale(1.025);
 }
 
 @media (min-width: 768px) {
-  .surrender {
+  #surrender {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
@@ -627,17 +630,101 @@ body {
   opacity: 0.24;
 }
 
-.player-cards {
-  display: flex; /* Using flex to align cards inline */
-  padding: 10px; /* Space around the cards */
-}
-
 /* Individual card styling */
+/* Define the card's basic style */
 .card {
-  width: 90px; /* Width of each card */
-  height: 140px; /* Height of each card */
-  background-image: url("https://assets.codepen.io/67732/card-faces.svg");
-  background-size: 1400px 560px; /* Adjust according to the number of cards in the SVG */
+  width: 150px; /* Width of each card */
+  height: 210px; /* Height of each card */
   overflow: hidden;
   margin-right: 10px; /* Space between cards */
+  transform-style: preserve-3d;
+  transform-origin: center;
+  position: relative;
+  transition: transform 0.6s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer; /* Makes it clickable */
+}
+
+/* Animation for dealing cards */
+@keyframes deal-card {
+  0% {
+    transform: translateY(300px) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Apply the dealing animation */
+.card.dealing {
+  animation: deal-card 0.5s forwards;
+}
+
+/* Animation for card flip */
+@keyframes flip-card {
+  0% {
+    transform: rotateY(0);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Flip the card when hovered */
+.card:hover {
+  transform: rotateY(180deg);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* For the back side of the card */
+.card__back {
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  backface-visibility: hidden;
+}
+
+/* For the front side of the card */
+.card__face {
+  backface-visibility: hidden;
+}
+
+.player-hand {
+  display: flex;
+  flex-direction: row;
+  grid-column: 2;
+  grid-row: 2;
+  height: 25vh;
+  margin-left: 2rem;
+}
+
+.player-hands {
+  display: flex;
+}
+
+/* Chip animations */
+#chip {
+  transition: transform 0.5s ease; /* Smooth transition for scaling */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#chip:hover {
+  transform: scale(2.5); /* Only scale here */
+  animation: spin 2s infinite linear; /* Apply the spinning animation */
 }
