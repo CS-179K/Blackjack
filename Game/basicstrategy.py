@@ -317,24 +317,38 @@ def show_game():
 
     if 'player_hands' not in session or 'dealer_hand' not in session:
         initialize_game()
-
     player_hands = session.get('player_hands', [])
     dealer_hand = session.get('dealer_hand', [])
-    result = session.get('feedback', None)
+    show_dealer_hand = session.get('show_dealer_hand', False)
+    result = session.get('result', None)
+    insurance = session.get('insurance', None)
+    game_over = session.get('game_over', False)
+    splitted = session.get('splitted', False)
+    show_new_hand_button = session.get('show_new_hand_button', False)
+    bet = session.get('bet', 0)
+    show_new_game_button = session.get('show_new_game_button', False)
 
     player_hand_values = [hand_value(hand) for hand in player_hands]
     player_hands_with_values = list(zip(player_hands, player_hand_values))
 
-    return render_template('basicstrategy.html',
-                           player_hands_with_values=player_hands_with_values,
-                           dealer_hand=dealer_hand,
-                           dealer_hand_value=hand_value(dealer_hand) if dealer_hand else 0,
-                           result=result,
-                           bankroll=session['bankroll'],
-                           card_values=card_values)
 
+    dealer_hand_value = hand_value(dealer_hand) if show_dealer_hand else None
+    return render_template('basicstrategy.html',
+                            player_hands_with_values=player_hands_with_values,
+                            dealer_hand=dealer_hand,
+                            dealer_hand_value=dealer_hand_value,
+                            result=result,
+                            insurance=insurance,
+                            game_over=game_over,
+                            splitted=splitted,
+                            show_new_hand_button=show_new_hand_button,
+                            show_new_game_button=show_new_game_button,
+                            show_dealer_hand=show_dealer_hand,
+                            bet=bet,
+                            bankroll=session['bankroll'],
+                            card_values=card_values) 
 
 @basicstrategy.route('/handle_player_action/<action>')
 def player_action(action):
     handle_player_action(action)
-    return redirect(url_for('basicstrategy.show_game'))
+    return redirect(url_for('basicstrategy.show_game')) 
