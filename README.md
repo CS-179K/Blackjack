@@ -39,11 +39,11 @@ Installation Instructions for macOS:<br>
 10. Access the application via the link in terminal output
 
 ## **Usage Instructions**
-Option 1: Start a game of blackjack directly from the home screen.
-Option 2: Explore various game modes such as Card Counting Practice, Standard Game, or Basic Strategy Training.
+Option 1: Start a game of blackjack directly from the home screen.<br>
+Option 2: Explore various game modes such as Card Counting Practice, Standard Game, or Basic Strategy Training.<br>
 
-Each game mode features buttons for actions like Hit, Stay, Double, Insurance, Surrender, and specific betting options.
-To save your high scores, bankroll, wins, and total games played, consider creating an account. Registering will allow you to log in and continue your progress seamlessly!
+Each game mode features buttons for actions like Hit, Stay, Double, Insurance, Surrender, and specific betting options.<br>
+To save your high scores, bankroll, wins, and total games played, consider creating an account. Registering will allow you to log in and continue your progress seamlessly!<br>
 
 ## **Details**
 **Major Functional Features**
