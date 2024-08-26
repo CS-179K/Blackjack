@@ -1,200 +1,247 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/styles.css') }}"
+/>
 
-{% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="grid-container">
-    <!-- Bankroll, Current Bet and Betting -->
-    <div class="chips">Bankroll: ${{ bankroll }}
-        <p id="current-bet">Current Bet: ${{ bet }} </p>
-        <form id="bet-amount" action="{{ url_for('game.start_game') }}" method="post" style="display: flex; gap: 10px;">
-            <label for="bet" style="color: #fff;">Bet Amount:</label>
-            <input type="number" id="bet" name="bet" min="1" max="{{ bankroll }}" required
-                style="padding: 5px; border-radius: 4px;">
-            <input type="image" id="chip" src="{{ url_for('static', filename='img/poker_chip.svg') }}"></input>
-        </form>
-    </div>
-<!-- Dealer Hand -->
-        <div class="dealer-hand" style="
-        display: flex;
-        align-items: center;
-      ">{% if show_dealer_hand %} 
+  <!-- Bankroll, Current Bet and Betting -->
+  <div class="chips">
+    Bankroll: ${{ bankroll }}
+    <p id="current-bet">Current Bet: ${{ bet }}</p>
+    <form
+      id="bet-amount"
+      action="{{ url_for('game.start_game') }}"
+      method="post"
+      style="display: flex; gap: 10px"
+    >
+      <label for="bet" style="color: #fff">Bet Amount:</label>
+      <input
+        type="number"
+        id="bet"
+        name="bet"
+        min="1"
+        max="{{ bankroll }}"
+        required
+        style="padding: 5px; border-radius: 4px"
+      />
+      <input
+        type="image"
+        id="chip"
+        src="{{ url_for('static', filename='img/poker_chip.svg') }}"
+      />
+    </form>
+  </div>
+  <!-- Dealer Hand -->
+  {% if dealer_hand %}
+  <div class="dealer-hand" style="display: flex; align-items: center">
+    {% if show_dealer_hand %}
 
-          <h2 style="margin-right: 20px; color: #fff">Dealer Hand:</h2>
+    <h2 style="margin-right: 20px; color: #fff">Dealer Hand:</h2>
 
-          {% for card in dealer_hand %}
+    {% for card in dealer_hand %}
 
-          <div class="card" data-card-id="{{ card }}" style="
-          border: 1px solid #aa1e1e;
-          border-radius: 4px;
-          background-color: #333;
-          color: #fff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        ">
-              <!-- The card's image will be rendered by the updateCards function -->
-          </div>
-          {% endfor %}
-
-          <p style="color: #f10000">Dealer's Score: {{ dealer_hand_value }}</p>
-          {% else %}
-          <div class="card" data-card-id="{% if dealer_hand %} {{ dealer_hand[0] }} {% endif %}" >
-              <!-- The card's image will be rendered by the updateCards function -->
-          </div>
-          
-          <div class="card" style="
-          padding: 10px;
-          border: 1px solid #aa1e1e;
-          border-radius: 4px;
-          background-color: #333;
-          color: #fff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        ">
-              Hidden Card
-          </div>
-          {% endif %}
-
-      </div>
-<!-- Player Hand -->
-<div class="player-hands" style="margin-top: 20px">
-    {% for hand, value in player_hands_with_values %}
-    <div class="player-hand" style="display: flex; align-items: center;">
-        <h2 style="margin-right: 20px; color: #fff">
-            Your Hand {{ loop.index }}:
-        </h2>
-        {% for card in hand %}
-        <div class="card" data-card-id="{{ card }}" style="
-          border: 1px solid #aa1e1e;
-          border-radius: 4px;
-          background-color: #333;
-          color: #fff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        ">
-            <!-- The card's image will be rendered by the updateCards function -->
-        </div>
-        {% endfor %}
-        <p style="color: #fff">Value: {{ value }}</p>
+    <div
+      class="card"
+      data-card-id="{{ card }}"
+      style="
+        border-radius: 4px;
+        background-color: #333;
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      "
+    >
+      <!-- The card's image will be rendered by the updateCards function -->
     </div>
     {% endfor %}
-</div>
-    <div id="results">
-<!-- Game Result -->
-    {% if result %}
-    <h2 style="
-      background-color: #333;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      margin-top: 20px;
-    ">
-        Result: {{ result }}
-    </h2>
+
+    <p style="color: #f10000">Dealer's Score: {{ dealer_hand_value }}</p>
+    {% else %}
+    <div
+      class="card"
+      data-card-id="{% if dealer_hand %} {{ dealer_hand[0] }} {% endif %}"
+    >
+      <!-- The card's image will be rendered by the updateCards function -->
+    </div>
+
+    <div
+      class="card"
+      style="
+        padding: 10px;
+        border-radius: 4px;
+        background: url(../static/img/card_back.svg);
+        background-size: cover;
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        background-repeat: no-repeat;
+      "
+    ></div>
     {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Player Hand -->
+  <div class="player-hands" style="margin-top: 20px">
+    {% for hand, value in player_hands_with_values %}
+    <div class="player-hand" style="display: flex; align-items: center">
+      <h2 style="margin-right: 20px; color: #fff">
+        Your Hand {{ loop.index }}:
+      </h2>
+      {% for card in hand %}
+      <div
+        class="card"
+        data-card-id="{{ card }}"
+        style="
+          border-radius: 4px;
+          background-color: #333;
+          color: #fff;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        "
+      >
+        <!-- The card's image will be rendered by the updateCards function -->
+      </div>
+      {% endfor %}
+      <p style="color: #fff">Value: {{ value }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  <div id="results">
+    <!-- Game Result -->
+    {% if session.game_over is not false %} {% if result %}
+    <h2
+      style="
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        margin-top: 20px;
+      "
+    >
+      Result: {{ result }}
+    </h2>
+    {% endif %} {% endif %}
 
     <!-- Developer Console for Split and Insurance -->
-    <div id="developer-console" style="display: none;"> <!-- initially hidden -->>
+    <div id="developer-console" style="display: none">
+      <!-- initially hidden -->>
       <h3>Developer Console</h3>
       <form id="add-card-form">
-          <label for="hand-type">Hand Type:</label>
-          <select name="hand_type" id="hand-type">
-              <option value="player">Player</option>
-              <option value="dealer">Dealer</option>
-          </select>
-          <label for="card">Card:</label>
-          <select name="card" id="card">
-            <optgroup>
-                <option value="A of Spades">Ace of Spades</option>
-            </optgroup>
-          </select>
-          <button id="add-card-button" type="button" >Add Card</button>
+        <label for="hand-type">Hand Type:</label>
+        <select name="hand_type" id="hand-type">
+          <option value="player">Player</option>
+          <option value="dealer">Dealer</option>
+        </select>
+        <label for="card">Card:</label>
+        <select name="card" id="card">
+          <optgroup>
+            <option value="A of Spades">Ace of Spades</option>
+          </optgroup>
+        </select>
+        <button id="add-card-button" type="button">Add Card</button>
       </form>
     </div>
+  </div>
+  <div class="grid-buttons">
+    <!-- Insurance Status -->
+    {% if insurance_prompted is true %}
 
+    <h3 id="insurance-status">
+      {{insurance}} Insurance: {{ 'Active' if insurance else 'Not Active' }}
+    </h3>
 
-    </div>
-    <div class="grid-buttons">
+    {% if not insurance %}
+    <form action="{{ url_for('game.insurance') }}" method="post">
+      <div id="ins-buttons">
+        <button
+          class="take-ins"
+          type="submit"
+          name="insurance_choice"
+          value="take"
+          role="button"
+        >
+          Take Insurance
+        </button>
+        <button
+          class="skip-ins"
+          type="submit"
+          name="insurance_choice"
+          value="skip"
+          role="button"
+        >
+          Skip Insurance
+        </button>
+      </div>
+    </form>
+    {% endif %} {% endif %}
 
-        <!-- Insurance Status -->
-        <h3 id="insurance-status">Insurance: {{ 'Active' if insurance else 'Not Active' }}</h3>
-
-        {% if not insurance %}
-        <form action="{{ url_for('game.insurance') }}" method="post">
-            <div id="ins-buttons">
-                <button class="take-ins" type="submit" value="take" role="button">Take Insurance</button>
-                <button class="skip-ins" type="submit" value="skip" role="button">Skip Insurance</button>
-            </div>
+    <!-- Game Actions -->
+    <div id="game-buttons">
+      <a id="hit" href="#" data-action="hit" role="button">Hit</a>
+      <a id="stay" href="#" data-action="stay">Stay</a>
+      {% if not splitted %}
+      <a id="split" href="#" data-action="split">Split</a>
+      {% endif %}
+      <a id="double" href="#" data-action="double_down">Double</a>
+      <a id="surrender" href="#" data-action="surrender">Surrender</a>
+      <div style="margin-top: 20px">
+        <form
+          action="{{ url_for('game.start_new_hand') }}"
+          method="post"
+          style="display: inline"
+        >
+          <button
+            class="restart"
+            type="submit"
+            style="
+              margin-right: 10px;
+              color: #fff;
+              background-color: #007bff;
+              border: none;
+              padding: 1rem 2rem;
+              margin-bottom: 1rem;
+              border-radius: 5px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            "
+          >
+            <span class="word-in">Deal </span>
+          </button>
         </form>
-        {% endif %}
-
-        <!-- Game Actions -->
-        <div id="game-buttons">
-            <a id="hit" href="#" data-action="hit" role="button">Hit</a>
-            <a id="stay" href="#" data-action="stay">Stay</a>
-            {% if not splitted %}
-            <a id="split" href="#" data-action="split">Split</a>
-            {% endif %}
-            <a id="double" href="#" data-action="double_down">Double</a>
-            <a id="surrender" href="#" data-action="surrender">Surrender</a>
-            <div style="margin-top: 20px">
-                <form
-                  action="{{ url_for('game.start_new_hand') }}"
-                  method="post"
-                  style="display: inline"
-                >
-                  <button
-                    type="submit"
-                    style="
-                      margin-right: 10px;
-                      color: #fff;
-                      background-color: #007bff;
-                      border: none;
-                      padding: 10px 20px;
-                      border-radius: 5px;
-                      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-                    "
-                  >
-                    Start New Hand
-                  </button>
-                </form>
-                <form
-                  action="{{ url_for('game.start_new_game') }}"
-                  method="post"
-                  style="display: inline"
-                >
-                  <button
-                    type="submit"
-                    style="
-                      color: #fff;
-                      background-color: #28a745;
-                      border: none;
-                      padding: 10px 20px;
-                      border-radius: 5px;
-                      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-                    "
-                  >
-                    Start New Game
-                  </button>
-                </form>
-              </div>
-        </div>
-        
+        <form
+          action="{{ url_for('game.start_new_game') }}"
+          method="post"
+          style="display: inline"
+        >
+          <button
+            class="restart"
+            type="submit"
+            style="
+              color: #fff;
+              background-color: #28a745;
+              border: none;
+              padding: 0.5rem 2rem;
+              border-radius: 5px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            "
+          >
+            <span class="word-in">New Game </span>
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script>
-        var gameUrls = {
-            showGame: "{{ url_for('game.show_game') }}",
-            playerAction: "{{ url_for('game.player_action', action='') }}",
-            startNewHand: "{{ url_for('game.start_new_hand') }}",
-            startNewGame: "{{ url_for('game.start_new_game') }}",
-        };
-    </script>
-    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
-
-
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script>
+    var gameUrls = {
+      showGame: "{{ url_for('game.show_game') }}",
+      playerAction: "{{ url_for('game.player_action', action='') }}",
+      startNewHand: "{{ url_for('game.start_new_hand') }}",
+      startNewGame: "{{ url_for('game.start_new_game') }}",
+    };
+  </script>
+  <script src="{{ url_for('static', filename='js/game.js') }}"></script>
 </div>
 
 {% endblock %}

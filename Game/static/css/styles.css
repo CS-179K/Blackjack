@@ -633,7 +633,7 @@ body {
 /* Individual card styling */
 /* Define the card's basic style */
 .card {
-  width: 150px; /* Width of each card */
+  width: 140px; /* Width of each card */
   height: 210px; /* Height of each card */
   overflow: hidden;
   margin-right: 10px; /* Space between cards */
@@ -642,6 +642,7 @@ body {
   position: relative;
   transition: transform 0.6s ease-in-out, box-shadow 0.3s ease-in-out;
   cursor: pointer; /* Makes it clickable */
+  border-radius: 4px;
 }
 
 /* Animation for dealing cards */
@@ -727,4 +728,41 @@ body {
 #chip:hover {
   transform: scale(2.5); /* Only scale here */
   animation: spin 2s infinite linear; /* Apply the spinning animation */
+}
+.word-in {
+  color: white !important;
+}
+.restart:hover span.word-in {
+  padding-right: 25px;
+}
+
+.restart {
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.restart span.word-in {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.restart span.word-in:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.restart:hover span.word-in {
+  padding-right: 25px;
+}
+
+.restart:hover span.word-in:after {
+  opacity: 1;
+  right: 0;
 }
