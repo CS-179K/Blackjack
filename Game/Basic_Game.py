@@ -495,18 +495,23 @@ def add_card_to_hand():
     
     if hand_type not in ['player', 'dealer'] or not card:
         return "Invalid hand type or card.", 400
-
     if hand_type == 'player':
         player_hands = session.get('player_hands', [])
         if player_hands:
             #player_hands[0].insert(0,card)  # add card to the first hand
-            player_hands[0] = [card, card]
+            if card == '10 of Spades':
+                player_hands[0] = [card, 'A of Spades']
+            else:
+                player_hands[0] = [card, card]
             session['player_hands'] = player_hands
             print(player_hands)
     elif hand_type == 'dealer':
         dealer_hand = session.get('dealer_hand', [])
         #dealer_hand.insert(0,card)
-        dealer_hand = [card, card]
+        if card == '10 of Spades':
+            dealer_hand = [card, 'A of Spades']
+        else:
+            dealer_hand = [card, 'card']
         session['dealer_hand'] = dealer_hand
 
     player_hands = session.get('player_hands', [])
