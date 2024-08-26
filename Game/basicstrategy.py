@@ -85,7 +85,7 @@ def basic_strategy(player_total, dealer_value, soft):
     if 4 <= player_total <= 8:
         return 'hit'
     if player_total == 9:
-        if dealer_value in [1, 2, 7, 8, 9, 10]:
+        if dealer_value in [1, 2, 7, 8, 9, 10, 11]:
             return 'hit'
         return 'double_down'
     if player_total == 10:
