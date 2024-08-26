@@ -21,9 +21,12 @@
         <div class="dealer-hand" style="
         display: flex;
         align-items: center;
-      ">
+      ">{% if show_dealer_hand %} 
+
           <h2 style="margin-right: 20px; color: #fff">Dealer Hand:</h2>
-          {% if show_dealer_hand %} {% for card in dealer_hand %}
+
+          {% for card in dealer_hand %}
+
           <div class="card" data-card-id="{{ card }}" style="
           border: 1px solid #aa1e1e;
           border-radius: 4px;
@@ -34,11 +37,13 @@
               <!-- The card's image will be rendered by the updateCards function -->
           </div>
           {% endfor %}
+
           <p style="color: #f10000">Dealer's Score: {{ dealer_hand_value }}</p>
           {% else %}
           <div class="card" data-card-id="{% if dealer_hand %} {{ dealer_hand[0] }} {% endif %}" >
               <!-- The card's image will be rendered by the updateCards function -->
           </div>
+          
           <div class="card" style="
           padding: 10px;
           border: 1px solid #aa1e1e;
@@ -50,6 +55,7 @@
               Hidden Card
           </div>
           {% endif %}
+
       </div>
 <!-- Player Hand -->
 <div class="player-hands" style="margin-top: 20px">
@@ -74,7 +80,7 @@
     {% endfor %}
 </div>
     <div id="results">
-            <!-- Game Result -->
+<!-- Game Result -->
     {% if result %}
     <h2 style="
       background-color: #333;
