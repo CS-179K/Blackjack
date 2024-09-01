@@ -6,6 +6,11 @@ By Mario Martinez (mmart477), Ocean Chen (ochen011), Ted Voo (tvoo001), Alec Bog
 ## **Project Idea**
 A blackjack simulator designed to help blackjack enthusiasts or new players interested in learning the game by providing a digital environment where users can practice and refine blackjack skills. The simulator replicates real-life blackjack games, allowing the user to play multiple hands, practice card counting, and master basic strategy without committing real money.
 
+## **Project Final Report & Demo**
+Zoom Recording Link:https://ucr.zoom.us/rec/play/2K_TiIGb7H-Ny4l1SQam-I0Np2heA-uzsrAaMjqABvkFD5Z8BZAOeH7EhjtJOs1AoUPjYvsdtWoKa7LL.uBNuvmj2IB6MI7AZ?canPlayFromShare=true&from=my_recording&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fucr.zoom.us%2Frec%2Fshare%2F82lnxa_CGXZFUjW0p_6AkdNCexWrr2-HmKSsiI9hWAuasdDdFkYzD9vF_PxDhCRb.l6lED0j_GKRy4XTq%20Passcode%3A%201iZB%405Pq <br>
+Zoom Recording Password:1iZB@5Pq <br>
+Final Report Link:https://docs.google.com/document/d/1CpQO8mAj_hjKyb5Sk3Bzf-hQJrZDNPdAnnb79Td58wU/edit?usp=sharing <br>
+
 ## **Installation Instruction**
 Installation Instructions for Linux:<br>
 1. Open terminal, and run command sudo apt install git // this is to install git
